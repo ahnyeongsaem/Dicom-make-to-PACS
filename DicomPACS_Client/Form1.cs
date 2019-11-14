@@ -14,7 +14,7 @@ namespace DicomPACS_Client
     {
         public Form1()
         {
-            InitializeComponent();
+           InitializeComponent();
         }
     }
 }
