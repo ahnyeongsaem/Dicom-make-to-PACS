@@ -17,9 +17,6 @@ namespace DicomPACS_Client
 {
     static class DicomCtrl
     {
-        /// <summary>
-        /// 해당 응용 프로그램의 주 진입점입니다.
-        /// </summary>
         [STAThread]
         static void Main()
         {
@@ -28,14 +25,8 @@ namespace DicomPACS_Client
             Application.Run(new Form1());
         }
 
-        public static void DicomToJPG(string DcmFile, string TargetPath)
-        {
-            var image = new DicomImage(DcmFile);
-            string jpgPath = Path.Combine(TargetPath, "test.jpg");
-            image.RenderImage().Save(jpgPath);
-        }
 
-        public static bool DcmPrefixValidate(FileStream Dcmfs)
+        public static bool DcmPrefixValidate(FileStream Dcmfs) //dcm to image remove
         {
             Dcmfs.Seek(128, SeekOrigin.Begin); // Premble 128 bytes. and Prefix 'D','I','C','M' 4 bytes.
             return (Dcmfs.ReadByte() == (byte)'D' &&
