@@ -84,7 +84,7 @@ namespace DicomPACS_Client
         private static void FillDataset(DicomDataset dataset)
         {
             dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
-            dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());
+            dataset.Add(DicomTag.StudyInstanceUID, GenerateUid()); //todo : cannot generateuid
             dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid());
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
 
@@ -116,7 +116,10 @@ namespace DicomPACS_Client
         private static DicomUID GenerateUid()
         {
             StringBuilder uid = new StringBuilder();
-            uid.Append("1.08.1982.10121984.2.0.07").Append('.').Append(DateTime.UtcNow.Ticks);
+            //uid.Append("1.08.1982.10121984.2.0.07").Append('.').Append(DateTime.UtcNow.Ticks); //original
+            uid.Append("1.08.1982.10121984.2.0.07").Append('.').Append(DateTime.UtcNow.Ticks); //change
+
+
             return new DicomUID(uid.ToString(), "SOP Instance UID", DicomUidType.SOPInstance);
         }
 

@@ -21,5 +21,10 @@ namespace DicomPACS_Client
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DicomCtrl.MakeDicom(@"C:\Users\elysium1\Source\Repos\Dicom-make-to-PACS\DicomPACS_Client\testimage.png", "path");
+        }
     }
 }
