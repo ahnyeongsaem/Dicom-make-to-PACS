@@ -84,7 +84,7 @@ namespace DicomPACS_Client
         private static void FillDataset(DicomDataset dataset)
         {
             dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
-            dataset.Add(DicomTag.StudyInstanceUID, GenerateUid()); //todo : cannot generateuid
+            //dataset.Add(DicomTag.StudyInstanceUID, GenerateUid()); //todo : cannot generateuid
             dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid());
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
 
