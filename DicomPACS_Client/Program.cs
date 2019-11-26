@@ -84,7 +84,7 @@ namespace DicomPACS_Client
         private static void FillDataset(DicomDataset dataset)
         {
             dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
-            //dataset.Add(DicomTag.StudyInstanceUID, GenerateUid()); //todo : cannot generateuid
+            dataset.Add(DicomTag.StudyInstanceUID, GenerateUid()); 
             dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid());
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
 
@@ -92,7 +92,7 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.PatientName, "ParkSinHye");
             dataset.Add(DicomTag.PatientBirthDate, "19790830");
             dataset.Add(DicomTag.PatientSex, "F");
-            dataset.Add(DicomTag.PatientAge, "21");
+            dataset.Add(DicomTag.PatientAge, "21"); //TODO : DMDY change need
             dataset.Add(DicomTag.StudyDate, DateTime.Now);
             dataset.Add(DicomTag.StudyTime, DateTime.Now);
             dataset.Add(DicomTag.AccessionNumber, string.Empty);
@@ -117,7 +117,7 @@ namespace DicomPACS_Client
         {
             StringBuilder uid = new StringBuilder();
             //uid.Append("1.08.1982.10121984.2.0.07").Append('.').Append(DateTime.UtcNow.Ticks); //original
-            uid.Append("1.08.1982.10121984.2.0.07").Append('.').Append(DateTime.UtcNow.Ticks); //change
+            uid.Append("1.2.840.10008").Append('.').Append(DateTime.UtcNow.Ticks); //change
 
 
             return new DicomUID(uid.ToString(), "SOP Instance UID", DicomUidType.SOPInstance);
