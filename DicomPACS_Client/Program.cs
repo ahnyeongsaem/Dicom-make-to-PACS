@@ -92,7 +92,11 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.PatientName, "ParkSinHye");
             dataset.Add(DicomTag.PatientBirthDate, "19790830");
             dataset.Add(DicomTag.PatientSex, "F");
-            dataset.Add(DicomTag.PatientAge, "21"); //TODO : DMDY change need
+            /// A string of characters with one of the following formats
+            /// -- nnnD, nnnW, nnnM, nnnY; where nnn shall contain the number of days for D, weeks for W, months for M, or years for Y.
+            ///Example: "018M" would represent an age of 18 months.
+            dataset.Add(DicomTag.PatientAge,"024Y"); //TODO : DMDY change need
+            
             dataset.Add(DicomTag.StudyDate, DateTime.Now);
             dataset.Add(DicomTag.StudyTime, DateTime.Now);
             dataset.Add(DicomTag.AccessionNumber, string.Empty);
