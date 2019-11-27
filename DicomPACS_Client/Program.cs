@@ -95,7 +95,7 @@ namespace DicomPACS_Client
             /// A string of characters with one of the following formats
             /// -- nnnD, nnnW, nnnM, nnnY; where nnn shall contain the number of days for D, weeks for W, months for M, or years for Y.
             ///Example: "018M" would represent an age of 18 months.
-            dataset.Add(DicomTag.PatientAge,"024Y"); //TODO : DMDY change need
+            dataset.Add(DicomTag.PatientAge,"024Y"); 
             
             dataset.Add(DicomTag.StudyDate, DateTime.Now);
             dataset.Add(DicomTag.StudyTime, DateTime.Now);
@@ -108,7 +108,7 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.NumberOfStudyRelatedInstances, "1");
             dataset.Add(DicomTag.NumberOfStudyRelatedSeries, "1");
             dataset.Add(DicomTag.NumberOfSeriesRelatedInstances, "1");
-            dataset.Add(DicomTag.PatientOrientation, "F/A");
+            dataset.Add(DicomTag.PatientOrientation, "F/A"); //TODO : PatientOrientation change value
             dataset.Add(DicomTag.ImageLaterality, "U");
 
             dataset.Add(DicomTag.ContentDate, DateTime.Now);
