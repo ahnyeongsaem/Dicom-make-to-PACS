@@ -89,9 +89,9 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
 
             dataset.Add(DicomTag.PatientID, "790830");
-            dataset.Add(DicomTag.PatientName, "ParkSinHye");
-            dataset.Add(DicomTag.PatientBirthDate, "19790830");
-            dataset.Add(DicomTag.PatientSex, "F");
+            dataset.Add(DicomTag.PatientName, "안영샘"); //TODO : need encoding UTF-8 or EUC-KR check
+            dataset.Add(DicomTag.PatientBirthDate, "1990726");
+            dataset.Add(DicomTag.PatientSex, "M");
             /// A string of characters with one of the following formats
             /// -- nnnD, nnnW, nnnM, nnnY; where nnn shall contain the number of days for D, weeks for W, months for M, or years for Y.
             ///Example: "018M" would represent an age of 18 months.
@@ -108,13 +108,13 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.NumberOfStudyRelatedInstances, "1");
             dataset.Add(DicomTag.NumberOfStudyRelatedSeries, "1");
             dataset.Add(DicomTag.NumberOfSeriesRelatedInstances, "1");
-            dataset.Add(DicomTag.PatientOrientation, "F/A"); //TODO : PatientOrientation change value
+            dataset.Add(DicomTag.PatientOrientation, @"F\A"); //Patient direction of the rows and columns of the image 
             dataset.Add(DicomTag.ImageLaterality, "U");
 
             dataset.Add(DicomTag.ContentDate, DateTime.Now);
             dataset.Add(DicomTag.ContentTime, DateTime.Now);
             dataset.Add(DicomTag.InstanceNumber, "1");
-            dataset.Add(DicomTag.ConversionType, "a");
+            dataset.Add(DicomTag.ConversionType, "a"); //Todo : change conversiontype 
         }
 
         private static DicomUID GenerateUid()
@@ -130,7 +130,7 @@ namespace DicomPACS_Client
         private static Bitmap GetValidImage(Bitmap bitmap)
         {
             if (bitmap.PixelFormat != PixelFormat.Format24bppRgb)
-            {
+            {   
                 Bitmap old = bitmap;
                 using (old)
                 {
