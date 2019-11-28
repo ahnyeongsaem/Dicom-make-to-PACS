@@ -60,7 +60,7 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.Rows, (ushort)rows);
             dataset.Add(DicomTag.Columns, (ushort)columns);
 
-            DicomPixelData pixelData = DicomPixelData.Create(dataset, true);
+            DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
 
             pixelData.BitsStored = 8;
             //pixelData.BitsAllocated = 8; //Todo : 이거 바꿔야할듯함.
@@ -114,7 +114,7 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.ContentDate, DateTime.Now);
             dataset.Add(DicomTag.ContentTime, DateTime.Now);
             dataset.Add(DicomTag.InstanceNumber, "1");
-            dataset.Add(DicomTag.ConversionType, "a"); //Todo : change conversiontype 
+            dataset.Add(DicomTag.ConversionType, "WSD"); //Describes the kind of image conversion.
         }
 
         private static DicomUID GenerateUid()
