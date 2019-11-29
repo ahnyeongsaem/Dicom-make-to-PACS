@@ -84,8 +84,8 @@ namespace DicomPACS_Client
         private static void FillDataset(DicomDataset dataset)
         {
             dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
-            dataset.Add(DicomTag.StudyInstanceUID, GenerateUid()); 
-            dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid());
+            dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());  //스터디는 촬영 부위
+            dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid()); //이미지 10장을 묶는것
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
 
             dataset.Add(DicomTag.PatientID, "790830");
@@ -111,8 +111,8 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.PatientOrientation, @"F\A"); //Patient direction of the rows and columns of the image 
             dataset.Add(DicomTag.ImageLaterality, "U");
 
-            dataset.Add(DicomTag.ContentDate, DateTime.Now);
-            dataset.Add(DicomTag.ContentTime, DateTime.Now);
+            dataset.Add(DicomTag.ContentDate, DateTime.Now); 
+            dataset.Add(DicomTag.ContentTime, DateTime.Now); 
             dataset.Add(DicomTag.InstanceNumber, "1");
             dataset.Add(DicomTag.ConversionType, "WSD"); //Describes the kind of image conversion.
         }
