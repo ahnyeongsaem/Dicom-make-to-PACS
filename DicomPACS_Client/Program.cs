@@ -88,6 +88,8 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid()); //이미지 10장을 묶는것
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
 
+            dataset.Add(DicomTag.BitsAllocated, "8");//add bit allocate but pixeldata delete
+
             dataset.Add(DicomTag.PatientID, "790830");
             dataset.Add(DicomTag.PatientName, "안영샘"); //TODO : need encoding UTF-8 or EUC-KR check
             dataset.Add(DicomTag.PatientBirthDate, "1990726");
