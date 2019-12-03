@@ -76,7 +76,7 @@ namespace DicomPACS_Client
             //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
             string TargetFile = Path.Combine(TargetPath, "Test.dcm");
 
-            dicomfile.Save(TargetFile);
+            dicomfile.Save(TargetFile); //todo : dicom file save error
 
             return TargetFile;
         }
@@ -85,7 +85,7 @@ namespace DicomPACS_Client
         {
             dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
             dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());  //스터디는 촬영 부위
-            dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid()); //이미지 10장을 묶는것
+            dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid()); //예 : 이미지 10장을 묶는것 시리즈 상위 그룹이 있는듯?
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
 
             dataset.Add(DicomTag.BitsAllocated, "8");//add bit allocate but pixeldata delete
