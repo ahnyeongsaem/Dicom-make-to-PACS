@@ -180,6 +180,7 @@ namespace DicomPACS_Client
             }
         }
 
+        //need button or code send to pacs
         public static void SendToPACS(string dcmfile, string sourceAET, string targetIP, int targetPort, string targetAET)
         {
             var m_pDicomFile = DicomFile.Open(dcmfile);
