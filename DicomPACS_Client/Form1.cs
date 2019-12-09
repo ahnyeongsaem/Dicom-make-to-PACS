@@ -35,5 +35,10 @@ namespace DicomPACS_Client
             DicomCtrl.SendToPACS(@"C:\Users\elysium1\Source\Repos\Dicom-make-to-PACS\Test.dcm", "soruceAET", "127.0.0.1", 8888, "targetAET");
             //TODO : sendto pacs in arguments
         }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
