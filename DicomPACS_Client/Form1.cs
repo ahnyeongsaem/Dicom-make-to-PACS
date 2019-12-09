@@ -32,7 +32,8 @@ namespace DicomPACS_Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
+            DicomCtrl.SendToPACS(@"C:\Users\elysium1\Source\Repos\Dicom-make-to-PACS\Test.dcm", "soruceAET", "127.0.0.1", 8888, "targetAET");
+            //TODO : sendto pacs in arguments
         }
     }
 }
