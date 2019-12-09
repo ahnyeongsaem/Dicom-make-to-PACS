@@ -91,7 +91,10 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.BitsAllocated, "8");//add bit allocate but pixeldata delete
 
             dataset.Add(DicomTag.PatientID, "790830");
-            dataset.Add(DicomTag.PatientName, "안영샘"); //TODO : need encoding UTF-8 or EUC-KR check
+
+            dataset.Add(DicomTag.SpecificCharacterSet, "ISO 2022 IR 149");
+
+            dataset.Add(DicomTag.PatientName, "안영샘"); 
             dataset.Add(DicomTag.PatientBirthDate, "1990726");
             dataset.Add(DicomTag.PatientSex, "M");
             /// A string of characters with one of the following formats
@@ -190,6 +193,7 @@ namespace DicomPACS_Client
             pClient.NegotiateAsyncOps();
             pClient.AddRequest(new DicomCStoreRequest(m_pDicomFile, DicomPriority.Medium));
             pClient.Send(targetIP, targetPort, false, sourceAET, targetAET);
+            
 
         }
        
