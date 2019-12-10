@@ -41,7 +41,9 @@ namespace DicomPACS_Client
             //not determind listview
         }
 
-
-
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.Show();
+        }
     }
 }
