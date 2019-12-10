@@ -63,13 +63,13 @@ namespace DicomPACS_Client
             DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
 
             pixelData.BitsStored = 8;
-            //pixelData.BitsAllocated = 8; //Todo : 이거 바꿔야할듯함.
             pixelData.SamplesPerPixel = 3; // 3 : red/green/blue  1 : CT/MR Single Grey Scale
             pixelData.HighBit = 7;
             pixelData.PixelRepresentation = 0;
             pixelData.PlanarConfiguration = 0;
 
             pixelData.AddFrame(buffer);
+            pixelData.AddFrame(buffer); //TODO : 두개가 들어가는지 테스트
 
             DicomFile dicomfile = new DicomFile(dataset);
 

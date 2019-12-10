@@ -67,7 +67,7 @@
             this.listBox1.ItemHeight = 12;
             this.listBox1.Items.AddRange(new object[] {
             "commit need"});
-            this.listBox1.Location = new System.Drawing.Point(145, 74);
+            this.listBox1.Location = new System.Drawing.Point(152, 83);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(380, 280);
             this.listBox1.TabIndex = 2;
