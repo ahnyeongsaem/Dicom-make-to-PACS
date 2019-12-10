@@ -83,6 +83,7 @@
             // 
             // notifyIcon1
             // 
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "Next Step Tray icon modify";
             this.notifyIcon1.Visible = true;
@@ -93,7 +94,7 @@
             this.toolStripMenuItem1,
             this.toolStripMenuItem2});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(183, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(183, 48);
             // 
             // toolStripMenuItem1
             // 

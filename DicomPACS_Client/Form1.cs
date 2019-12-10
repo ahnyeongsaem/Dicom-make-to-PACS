@@ -32,7 +32,7 @@ namespace DicomPACS_Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            DicomCtrl.SendToPACS(@"C:\Users\elysium1\Source\Repos\Dicom-make-to-PACS\Test.dcm", "VIEWREX", "192.168.0.226", 103, "VIEWREX");
+            DicomCtrl.SendToPACS(@"C:\Users\elysium1\Source\Repos\Dicom-make-to-PACS\Test.dcm", "OT", "192.168.0.226", 103, "VIEWREX");
             //TODO : modify ip arguments
         }
 
