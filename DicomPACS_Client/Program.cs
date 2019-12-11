@@ -43,6 +43,57 @@ namespace DicomPACS_Client
             return pName;
         }
 
+
+
+        /// <summary>
+        /// TODO : 이미지 폴더를 통째로 dicom 파일로 만드는것(ini까지 포함해서)
+        /// 를 만들어야함. //tomorrow commit need
+        /// </summary>
+        /// <param name="ImageFileFolder"></param>
+        /// <param name="TargetPath"></param>
+        /// <returns></returns>
+        public static string MakeDicominFolder(string ImageFileFolder, string TargetPath)
+        {
+            
+            
+            Bitmap bitmap = new Bitmap(ImageFile);
+            bitmap = GetValidImage(bitmap);
+
+            int rows, columns;
+            byte[] pixels = GetPixels(bitmap, out rows, out columns);
+
+            MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
+
+            DicomDataset dataset = new DicomDataset();
+            FillDataset(dataset);
+
+            dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
+            dataset.Add(DicomTag.Rows, (ushort)rows);
+            dataset.Add(DicomTag.Columns, (ushort)columns);
+
+            DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
+
+            pixelData.BitsStored = 8;
+            pixelData.SamplesPerPixel = 3; // 3 : red/green/blue  1 : CT/MR Single Grey Scale
+            pixelData.HighBit = 7;
+            pixelData.PixelRepresentation = 0;
+            pixelData.PlanarConfiguration = 0;
+
+            pixelData.AddFrame(buffer);
+            pixelData.AddFrame(buffer); //TODO : 두개가 들어가는지 테스트
+
+            DicomFile dicomfile = new DicomFile(dataset);
+
+            //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
+            string TargetFile = Path.Combine(TargetPath, "Test.dcm");
+
+            dicomfile.Save(TargetFile); //todo : dicom file save error
+
+            return TargetFile;
+        }
+
+
+
         public static string MakeDicom(string ImageFile, string TargetPath)
         {
             Bitmap bitmap = new Bitmap(ImageFile);
