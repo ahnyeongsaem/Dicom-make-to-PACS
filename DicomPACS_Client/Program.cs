@@ -56,6 +56,12 @@ namespace DicomPACS_Client
         {
             List<string> dirs = new List<string>(Directory.EnumerateDirectories(ImageFileFolder));
             //all dirs find
+            
+            foreach(string dir in dirs)
+            {
+                
+                //not need dirs name
+            }
 
 
 
