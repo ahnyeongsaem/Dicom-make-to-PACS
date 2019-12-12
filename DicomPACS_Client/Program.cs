@@ -54,8 +54,11 @@ namespace DicomPACS_Client
         /// <returns></returns>
         public static string MakeDicominFolder(string ImageFileFolder, string TargetPath)
         {
-            
-            
+            List<string> dirs = new List<string>(Directory.EnumerateDirectories(ImageFileFolder));
+            //all dirs find
+
+
+
             Bitmap bitmap = new Bitmap(ImageFile);
             bitmap = GetValidImage(bitmap);
 
