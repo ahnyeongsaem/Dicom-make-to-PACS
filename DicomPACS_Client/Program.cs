@@ -43,7 +43,14 @@ namespace DicomPACS_Client
             return pName;
         }
 
-
+        /// <summary>
+        /// kernel32 import for ini file input/output
+        /// </summary>
+        [DllImport("kernel32")]
+        private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
+        [DllImport("kernel32")]
+        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
+        
 
         /// <summary>
         /// TODO : 이미지 폴더를 통째로 dicom 파일로 만드는것(ini까지 포함해서)
@@ -59,7 +66,10 @@ namespace DicomPACS_Client
             
             foreach(string dir in dirs)
             {
-                
+
+                //Example : GetPrivateProfileString("WookoaSetting", "TopAlways", "", topAlways, topAlways.Capacity, "C:\\Setting.ini");
+                //Example : WritePrivateProfileString("WookoaSetting", "ViewTray", "false", "C:\\Setting.ini");
+
                 //not need dirs name
             }
 
