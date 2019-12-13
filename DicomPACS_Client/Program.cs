@@ -63,14 +63,43 @@ namespace DicomPACS_Client
         {
             List<string> dirs = new List<string>(Directory.EnumerateDirectories(ImageFileFolder));
             //all dirs find
-            
-            foreach(string dir in dirs)
+
+            StringBuilder patientId = new StringBuilder();
+            StringBuilder patientName = new StringBuilder();
+            StringBuilder patientSex = new StringBuilder();
+            StringBuilder patientBod = new StringBuilder();
+            StringBuilder studyDate = new StringBuilder();
+            StringBuilder studyTime = new StringBuilder();
+            StringBuilder studyDESC = new StringBuilder();
+            StringBuilder accessionNo = new StringBuilder();
+            StringBuilder orderCode = new StringBuilder();
+            StringBuilder fileCnt = new StringBuilder();
+            StringBuilder requestSB = new StringBuilder();
+            StringBuilder sendResult = new StringBuilder();
+
+            foreach (string dir in dirs)
             {
 
                 //Example : GetPrivateProfileString("WookoaSetting", "TopAlways", "", topAlways, topAlways.Capacity, "C:\\Setting.ini");
                 //Example : WritePrivateProfileString("WookoaSetting", "ViewTray", "false", "C:\\Setting.ini");
-
                 //not need dirs name
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_NAME", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+
+
+
+                //TODO : other parameter reading need
+
             }
 
 
