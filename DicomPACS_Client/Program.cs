@@ -64,18 +64,18 @@ namespace DicomPACS_Client
             List<string> dirs = new List<string>(Directory.EnumerateDirectories(ImageFileFolder));
             //all dirs find
 
-            StringBuilder patientId = new StringBuilder();
-            StringBuilder patientName = new StringBuilder();
-            StringBuilder patientSex = new StringBuilder();
-            StringBuilder patientBod = new StringBuilder();
-            StringBuilder studyDate = new StringBuilder();
-            StringBuilder studyTime = new StringBuilder();
-            StringBuilder studyDESC = new StringBuilder();
-            StringBuilder accessionNo = new StringBuilder();
-            StringBuilder orderCode = new StringBuilder();
-            StringBuilder fileCnt = new StringBuilder();
-            StringBuilder requestSB = new StringBuilder();
-            StringBuilder sendResult = new StringBuilder();
+            StringBuilder PATIENT_ID = new StringBuilder();
+            StringBuilder PATIENT_NAME = new StringBuilder();
+            StringBuilder PATIENT_SEX = new StringBuilder();
+            StringBuilder PATIENT_BOD = new StringBuilder();
+            StringBuilder STUDY_DATE = new StringBuilder();
+            StringBuilder STUDY_TIME = new StringBuilder();
+            StringBuilder STUDY_DESC = new StringBuilder();
+            StringBuilder ACCESSION_NO = new StringBuilder();
+            StringBuilder ORDER_CODE = new StringBuilder();
+            StringBuilder FILE_CNT = new StringBuilder();
+            StringBuilder REQUEST = new StringBuilder();
+            StringBuilder SEND_RESULT = new StringBuilder();
 
             foreach (string dir in dirs)
             {
@@ -83,18 +83,18 @@ namespace DicomPACS_Client
                 //Example : GetPrivateProfileString("WookoaSetting", "TopAlways", "", topAlways, topAlways.Capacity, "C:\\Setting.ini");
                 //Example : WritePrivateProfileString("WookoaSetting", "ViewTray", "false", "C:\\Setting.ini");
                 //not need dirs name
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_NAME", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", patientId, patientId.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", PATIENT_ID, PATIENT_ID.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_NAME", "", PATIENT_NAME, PATIENT_NAME.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_SEX", "", PATIENT_SEX, PATIENT_SEX.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_BOD", "", PATIENT_BOD, PATIENT_BOD.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "STUDY_DATE", "", STUDY_DATE, STUDY_DATE.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "STUDY_TIME", "", STUDY_TIME, STUDY_TIME.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "STUDY_DESC", "", STUDY_DESC, STUDY_DESC.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "ACCESSION_NO", "", ACCESSION_NO, ACCESSION_NO.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "ORDER_CODE", "", ORDER_CODE, ORDER_CODE.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "FILE_CNT", "", FILE_CNT, FILE_CNT.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", REQUEST, REQUEST.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", SEND_RESULT, SEND_RESULT.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
 
 
 
