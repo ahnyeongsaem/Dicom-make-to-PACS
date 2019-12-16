@@ -79,7 +79,7 @@ namespace DicomPACS_Client
 
             foreach (string dir in dirs)
             {
-
+                
                 //Example : GetPrivateProfileString("WookoaSetting", "TopAlways", "", topAlways, topAlways.Capacity, "C:\\Setting.ini");
                 //Example : WritePrivateProfileString("WookoaSetting", "ViewTray", "false", "C:\\Setting.ini");
                 //not need dirs name
@@ -93,51 +93,52 @@ namespace DicomPACS_Client
                 GetPrivateProfileString("INFO", "ACCESSION_NO", "", ACCESSION_NO, ACCESSION_NO.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
                 GetPrivateProfileString("INFO", "ORDER_CODE", "", ORDER_CODE, ORDER_CODE.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
                 GetPrivateProfileString("INFO", "FILE_CNT", "", FILE_CNT, FILE_CNT.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", REQUEST, REQUEST.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", SEND_RESULT, SEND_RESULT.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "REQUEST", "", REQUEST, REQUEST.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
 
 
+                List<string> imgfiles = new List<string>(Directory.EnumerateFiles(dir));
+                //TODO : need below modify
+                //TODO : need file list extract & foreach statement
+                Bitmap bitmap = new Bitmap(ImageFile);
+                bitmap = GetValidImage(bitmap);
 
-                //TODO : other parameter reading need
+                int rows, columns;
+                byte[] pixels = GetPixels(bitmap, out rows, out columns);
+
+                MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
+
+                DicomDataset dataset = new DicomDataset();
+                FillDataset(dataset);
+
+                dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
+                dataset.Add(DicomTag.Rows, (ushort)rows);
+                dataset.Add(DicomTag.Columns, (ushort)columns);
+
+                DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
+
+                pixelData.BitsStored = 8;
+                pixelData.SamplesPerPixel = 3; // 3 : red/green/blue  1 : CT/MR Single Grey Scale
+                pixelData.HighBit = 7;
+                pixelData.PixelRepresentation = 0;
+                pixelData.PlanarConfiguration = 0;
+
+                pixelData.AddFrame(buffer);
+                pixelData.AddFrame(buffer); //TODO : 두개가 들어가는지 테스트
+
+                DicomFile dicomfile = new DicomFile(dataset);
+
+                //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
+                string TargetFile = Path.Combine(TargetPath, "Test.dcm");
+
+                dicomfile.Save(TargetFile); //todo : dicom file save error
+
 
             }
 
-
-
-            Bitmap bitmap = new Bitmap(ImageFile);
-            bitmap = GetValidImage(bitmap);
-
-            int rows, columns;
-            byte[] pixels = GetPixels(bitmap, out rows, out columns);
-
-            MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
-
-            DicomDataset dataset = new DicomDataset();
-            FillDataset(dataset);
-
-            dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
-            dataset.Add(DicomTag.Rows, (ushort)rows);
-            dataset.Add(DicomTag.Columns, (ushort)columns);
-
-            DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
-
-            pixelData.BitsStored = 8;
-            pixelData.SamplesPerPixel = 3; // 3 : red/green/blue  1 : CT/MR Single Grey Scale
-            pixelData.HighBit = 7;
-            pixelData.PixelRepresentation = 0;
-            pixelData.PlanarConfiguration = 0;
-
-            pixelData.AddFrame(buffer);
-            pixelData.AddFrame(buffer); //TODO : 두개가 들어가는지 테스트
-
-            DicomFile dicomfile = new DicomFile(dataset);
-
-            //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
-            string TargetFile = Path.Combine(TargetPath, "Test.dcm");
-
-            dicomfile.Save(TargetFile); //todo : dicom file save error
-
             return TargetFile;
+
+
         }
 
 
