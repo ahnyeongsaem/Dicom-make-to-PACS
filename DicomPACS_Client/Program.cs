@@ -97,9 +97,14 @@ namespace DicomPACS_Client
                 GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
 
 
-                List<string> imgfiles = new List<string>(Directory.EnumerateFiles(dir));
-                //TODO : need below modify
-                //TODO : need file list extract & foreach statement
+                List<string> imgFiles = new List<string>(Directory.EnumerateFiles(ImageFileFolder + @"\" + dir));
+
+                foreach(string imgfile in imgFiles)
+                {
+                    //TODO : need below modify
+                    //TODO : need file list extract & foreach statement
+                }
+
                 Bitmap bitmap = new Bitmap(ImageFile);
                 bitmap = GetValidImage(bitmap);
 
