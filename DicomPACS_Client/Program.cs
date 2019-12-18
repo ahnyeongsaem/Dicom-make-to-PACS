@@ -101,6 +101,11 @@ namespace DicomPACS_Client
 
                 foreach(string imgfile in imgFiles)
                 {
+                    if(string.Compare(imgfile.Substring(imgfile.Length-3,imgfile.Length),"png")!=0)
+                    {
+                        continue;
+                    }
+                    
                     //TODO : need below modify
                     //TODO : need file list extract & foreach statement
                 }
