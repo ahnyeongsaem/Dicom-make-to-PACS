@@ -59,7 +59,7 @@ namespace DicomPACS_Client
         /// <param name="ImageFileFolder"></param>
         /// <param name="TargetPath"></param>
         /// <returns></returns>
-        public static string MakeDicominFolder(string ImageFileFolder, string TargetPath)
+        public static void MakeDicominFolder(string ImageFileFolder, string TargetPath)
         {
             List<string> dirs = new List<string>(Directory.EnumerateDirectories(ImageFileFolder));
             //all dirs find
@@ -99,43 +99,42 @@ namespace DicomPACS_Client
 
                 List<string> imgFiles = new List<string>(Directory.EnumerateFiles(ImageFileFolder + @"\" + dir));
 
-                foreach(string imgfile in imgFiles)
+                DicomDataset dataset = new DicomDataset();
+                foreach (string imgfile in imgFiles)
                 {
                     if(string.Compare(imgfile.Substring(imgfile.Length-3,imgfile.Length),"png")!=0)
                     {
                         continue;
                     }
+
+                    Bitmap bitmap = new Bitmap(ImageFileFolder + @"\" + dir + @"\" + imgfile);
+                    bitmap = GetValidImage(bitmap);
+
+                    int rows, columns;
+                    byte[] pixels = GetPixels(bitmap, out rows, out columns);
+
+                    MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
+
                     
-                    //TODO : need below modify
-                    //TODO : need file list extract & foreach statement
+                    FillDataset(dataset);
+
+                    dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
+                    dataset.Add(DicomTag.Rows, (ushort)rows);
+                    dataset.Add(DicomTag.Columns, (ushort)columns);
+
+                    DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
+
+                    pixelData.BitsStored = 8;
+                    pixelData.SamplesPerPixel = 3; // 3 : red/green/blue  1 : CT/MR Single Grey Scale
+                    pixelData.HighBit = 7;
+                    pixelData.PixelRepresentation = 0;
+                    pixelData.PlanarConfiguration = 0;
+
+                    pixelData.AddFrame(buffer);
+                    //TODO : Need to check if it is created dcm in directory
+                    
                 }
-
-                Bitmap bitmap = new Bitmap(ImageFile);
-                bitmap = GetValidImage(bitmap);
-
-                int rows, columns;
-                byte[] pixels = GetPixels(bitmap, out rows, out columns);
-
-                MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
-
-                DicomDataset dataset = new DicomDataset();
-                FillDataset(dataset);
-
-                dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
-                dataset.Add(DicomTag.Rows, (ushort)rows);
-                dataset.Add(DicomTag.Columns, (ushort)columns);
-
-                DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
-
-                pixelData.BitsStored = 8;
-                pixelData.SamplesPerPixel = 3; // 3 : red/green/blue  1 : CT/MR Single Grey Scale
-                pixelData.HighBit = 7;
-                pixelData.PixelRepresentation = 0;
-                pixelData.PlanarConfiguration = 0;
-
-                pixelData.AddFrame(buffer);
-                pixelData.AddFrame(buffer); //TODO : 두개가 들어가는지 테스트
-
+                
                 DicomFile dicomfile = new DicomFile(dataset);
 
                 //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
@@ -145,9 +144,6 @@ namespace DicomPACS_Client
 
 
             }
-
-            return TargetFile;
-
 
         }
 
