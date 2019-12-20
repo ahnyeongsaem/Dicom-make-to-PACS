@@ -38,6 +38,8 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,7 +69,7 @@
             this.listBox1.ItemHeight = 12;
             this.listBox1.Items.AddRange(new object[] {
             "commit need"});
-            this.listBox1.Location = new System.Drawing.Point(152, 83);
+            this.listBox1.Location = new System.Drawing.Point(156, 103);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(380, 280);
             this.listBox1.TabIndex = 2;
@@ -109,11 +111,30 @@
             this.toolStripMenuItem2.Size = new System.Drawing.Size(182, 22);
             this.toolStripMenuItem2.Text = "toolStripMenuItem2";
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(455, 40);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(320, 21);
+            this.textBox1.TabIndex = 5;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(455, 12);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(101, 27);
+            this.button4.TabIndex = 6;
+            this.button4.Text = "Directory Path";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button2);
@@ -125,6 +146,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -138,6 +160,8 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button4;
     }
 }
 

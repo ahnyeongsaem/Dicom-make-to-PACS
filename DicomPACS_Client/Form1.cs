@@ -45,5 +45,18 @@ namespace DicomPACS_Client
         {
             this.Show();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //directory browser
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.RootFolder = Environment.SpecialFolder.Desktop; // TODO : init save/load
+            fbd.Description = "+++ Select Sender Folder +++";
+            fbd.ShowNewFolderButton = false;
+            if(fbd.ShowDialog()==DialogResult.OK)
+            {
+                textBox1.Text = fbd.SelectedPath;
+            }
+        }
     }
 }
