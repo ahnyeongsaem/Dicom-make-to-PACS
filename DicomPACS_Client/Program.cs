@@ -59,7 +59,7 @@ namespace DicomPACS_Client
         /// <param name="ImageFileFolder"></param>
         /// <param name="TargetPath"></param>
         /// <returns></returns>
-        public static void MakeDicominFolder(string ImageFileFolder, string TargetPath)
+        public static void MakeDicominFolder(string ImageFileFolder, string TargetPath)//TODO: need target path change
         {
             List<string> dirs = new List<string>(Directory.EnumerateDirectories(ImageFileFolder));
             //all dirs find
