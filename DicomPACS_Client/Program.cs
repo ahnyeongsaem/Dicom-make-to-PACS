@@ -83,31 +83,32 @@ namespace DicomPACS_Client
                 //Example : GetPrivateProfileString("WookoaSetting", "TopAlways", "", topAlways, topAlways.Capacity, "C:\\Setting.ini");
                 //Example : WritePrivateProfileString("WookoaSetting", "ViewTray", "false", "C:\\Setting.ini");
                 //not need dirs name
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", PATIENT_ID, PATIENT_ID.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_NAME", "", PATIENT_NAME, PATIENT_NAME.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_SEX", "", PATIENT_SEX, PATIENT_SEX.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "PATIENT_BOD", "", PATIENT_BOD, PATIENT_BOD.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "STUDY_DATE", "", STUDY_DATE, STUDY_DATE.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "STUDY_TIME", "", STUDY_TIME, STUDY_TIME.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "STUDY_DESC", "", STUDY_DESC, STUDY_DESC.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "ACCESSION_NO", "", ACCESSION_NO, ACCESSION_NO.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "ORDER_CODE", "", ORDER_CODE, ORDER_CODE.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "FILE_CNT", "", FILE_CNT, FILE_CNT.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "REQUEST", "", REQUEST, REQUEST.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
-                GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, ImageFileFolder + @"\" + dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_ID", "", PATIENT_ID, PATIENT_ID.Capacity, dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_NAME", "", PATIENT_NAME, PATIENT_NAME.Capacity, dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_SEX", "", PATIENT_SEX, PATIENT_SEX.Capacity,  dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "PATIENT_BOD", "", PATIENT_BOD, PATIENT_BOD.Capacity,  dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "STUDY_DATE", "", STUDY_DATE, STUDY_DATE.Capacity, dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "STUDY_TIME", "", STUDY_TIME, STUDY_TIME.Capacity,  dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "STUDY_DESC", "", STUDY_DESC, STUDY_DESC.Capacity, dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "ACCESSION_NO", "", ACCESSION_NO, ACCESSION_NO.Capacity,  dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "ORDER_CODE", "", ORDER_CODE, ORDER_CODE.Capacity, dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "FILE_CNT", "", FILE_CNT, FILE_CNT.Capacity, dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "REQUEST", "", REQUEST, REQUEST.Capacity, dir + @"\Setting.ini");
+                GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, dir + @"\Setting.ini");
 
+                Console.Out.WriteLine(dir);
 
-                List<string> imgFiles = new List<string>(Directory.EnumerateFiles(ImageFileFolder + @"\" + dir));
+                List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
 
                 DicomDataset dataset = new DicomDataset();
                 foreach (string imgfile in imgFiles)
                 {
-                    if(string.Compare(imgfile.Substring(imgfile.Length-3,imgfile.Length),"png")!=0)
+                    if(string.Compare(imgfile.Substring(imgfile.Length-3,3),"png")!=0)
                     {
                         continue;
                     }
 
-                    Bitmap bitmap = new Bitmap(ImageFileFolder + @"\" + dir + @"\" + imgfile);
+                    Bitmap bitmap = new Bitmap(imgfile);
                     bitmap = GetValidImage(bitmap);
 
                     int rows, columns;
