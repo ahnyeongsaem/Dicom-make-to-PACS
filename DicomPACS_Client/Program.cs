@@ -101,7 +101,7 @@ namespace DicomPACS_Client
                 List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
 
                 DicomDataset dataset = new DicomDataset();
-                FillDataset(dataset);
+                FillDataset(dataset); //TODO : change need priavate profile string
 
                 bool imageDataSetFlag = false;
                 foreach (string imgfile in imgFiles)
@@ -146,7 +146,7 @@ namespace DicomPACS_Client
                 string TargetFile = Path.Combine(dir, "Test.dcm");
 
                 dicomfile.Save(TargetFile); //todo : dicom file save error
-
+                SendToPACS(TargetFile,"OT", "192.168.0.226", 103, "VIEWREX");
 
             }
 
