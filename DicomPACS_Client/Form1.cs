@@ -29,7 +29,7 @@ namespace DicomPACS_Client
                 @"C:\Users\elysium1\Source\Repos\Dicom-make-to-PACS");
             //add dicom path
             */
-            DicomCtrl.MakeDicominFolder(textBox1.Text, textBox1.Text); //todo : target change
+            DicomCtrl.MakeDicominFolder(textBox1.Text); //todo : target change
         }
 
         private void button2_Click(object sender, EventArgs e)

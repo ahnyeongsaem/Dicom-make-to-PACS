@@ -59,7 +59,7 @@ namespace DicomPACS_Client
         /// <param name="ImageFileFolder"></param>
         /// <param name="TargetPath"></param>
         /// <returns></returns>
-        public static void MakeDicominFolder(string ImageFileFolder, string TargetPath)//TODO: need target path change
+        public static void MakeDicominFolder(string ImageFileFolder)//TODO: need target path change
         {
             List<string> dirs = new List<string>(Directory.EnumerateDirectories(ImageFileFolder));
             //all dirs find
@@ -101,6 +101,9 @@ namespace DicomPACS_Client
                 List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
 
                 DicomDataset dataset = new DicomDataset();
+                FillDataset(dataset);
+
+                bool imageDataSetFlag = false;
                 foreach (string imgfile in imgFiles)
                 {
                     if(string.Compare(imgfile.Substring(imgfile.Length-3,3),"png")!=0)
@@ -116,12 +119,13 @@ namespace DicomPACS_Client
 
                     MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
 
-                    
-                    FillDataset(dataset);
-
-                    dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
-                    dataset.Add(DicomTag.Rows, (ushort)rows);
-                    dataset.Add(DicomTag.Columns, (ushort)columns);
+                    if(imageDataSetFlag==false)
+                    {
+                        dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
+                        dataset.Add(DicomTag.Rows, (ushort)rows);
+                        dataset.Add(DicomTag.Columns, (ushort)columns); //TODO : ADD Dcm image count check
+                        imageDataSetFlag = true;
+                    }
 
                     DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
 
@@ -139,7 +143,7 @@ namespace DicomPACS_Client
                 DicomFile dicomfile = new DicomFile(dataset);
 
                 //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
-                string TargetFile = Path.Combine(TargetPath, "Test.dcm");
+                string TargetFile = Path.Combine(dir, "Test.dcm");
 
                 dicomfile.Save(TargetFile); //todo : dicom file save error
 
