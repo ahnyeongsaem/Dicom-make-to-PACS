@@ -21,6 +21,11 @@ namespace DicomPACS_Client
         {
 
         }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //TODO : need textbox reading
+        }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
