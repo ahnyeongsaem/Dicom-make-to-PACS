@@ -16,14 +16,25 @@ namespace DicomPACS_Client
         {
            InitializeComponent();
         }
+        public static TextBox tb1;
+        public static TextBox tb2;
+        public static TextBox tb3;
+        public static TextBox tb4;
+        public static TextBox tb5;
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            tb1 = textBox1;
+            tb2 = textBox2;
+            tb3 = textBox3;
+            tb4 = textBox4;
+            tb5 = textBox5;
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //TODO : need textbox reading
+            
+            //TODO : all textbox (text1,2,3,4,5,) add need;
         }
 
 

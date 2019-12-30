@@ -54,7 +54,7 @@ namespace DicomPACS_Client
 
         /// <summary>
         /// TODO : 이미지 폴더를 통째로 dicom 파일로 만드는것(ini까지 포함해서)
-        /// 를 만들어야함. //tomorrow commit need
+        /// 를 만들어야함.
         /// </summary>
         /// <param name="ImageFileFolder"></param>
         /// <param name="TargetPath"></param>
@@ -95,7 +95,8 @@ namespace DicomPACS_Client
                 GetPrivateProfileString("INFO", "FILE_CNT", "", FILE_CNT, FILE_CNT.Capacity, dir + @"\Setting.ini");
                 GetPrivateProfileString("INFO", "REQUEST", "", REQUEST, REQUEST.Capacity, dir + @"\Setting.ini");
                 GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, dir + @"\Setting.ini");
-
+                
+                
                 Console.Out.WriteLine(dir);
 
                 List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
@@ -146,7 +147,7 @@ namespace DicomPACS_Client
                 string TargetFile = Path.Combine(dir, "Test.dcm");
 
                 dicomfile.Save(TargetFile); //todo : dicom file save error
-                SendToPACS(TargetFile,"OT", "192.168.0.226", 103, "VIEWREX");
+                SendToPACS(TargetFile,Form1.tb2.Text, Form1.tb3.Text,int.Parse(Form1.tb4.Text), Form1.tb5.Text);
 
             }
 
