@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Runtime.InteropServices;
+
 namespace DicomPACS_Client
 {
     public partial class Form1 : Form
@@ -16,20 +18,29 @@ namespace DicomPACS_Client
         {
            InitializeComponent();
         }
-        public static TextBox tb1;
-        public static TextBox tb2;
-        public static TextBox tb3;
-        public static TextBox tb4;
-        public static TextBox tb5;
+        public static TextBox tb1; //path
+        public static TextBox tb2; //sourceAET
+        public static TextBox tb3; //targetIP
+        public static TextBox tb4; //targetPort
+        public static TextBox tb5; //targetAET
+
+        [DllImport("kernel32")]
+        private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
+        [DllImport("kernel32")]
+        private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
+
 
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            listBox1.Items.Add("Form Loading Complete[" + DateTime.Now + "]");
+            //TODO : all textbox load need;
             tb1 = textBox1;
             tb2 = textBox2;
             tb3 = textBox3;
             tb4 = textBox4;
             tb5 = textBox5;
+            listBox1.Items.Add("User Setting Loading Complete[" + DateTime.Now+"]");
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {

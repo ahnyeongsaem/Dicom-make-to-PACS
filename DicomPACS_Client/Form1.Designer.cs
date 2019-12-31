@@ -75,8 +75,6 @@
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Items.AddRange(new object[] {
-            "commit need"});
             this.listBox1.Location = new System.Drawing.Point(31, 149);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(380, 280);
@@ -223,8 +221,8 @@
             this.Name = "Form1";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing); //added formclosing
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
