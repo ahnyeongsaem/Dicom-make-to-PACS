@@ -34,18 +34,35 @@ namespace DicomPACS_Client
         private void Form1_Load(object sender, EventArgs e)
         {
             listBox1.Items.Add("Form Loading Complete[" + DateTime.Now + "]");
-            //TODO : all textbox load need;
+
             tb1 = textBox1;
             tb2 = textBox2;
             tb3 = textBox3;
             tb4 = textBox4;
             tb5 = textBox5;
+
+            StringBuilder stmp = new StringBuilder();
+            GetPrivateProfileString("LoadParameter", "PATH", "", stmp, stmp.Capacity, @"\Setting.ini");
+            tb1.Text = stmp.ToString();
+            stmp.Clear();
+            GetPrivateProfileString("LoadParameter", "SOURCE_AET", "", stmp, stmp.Capacity, @"\Setting.ini");
+            tb2.Text = stmp.ToString();
+            stmp.Clear();
+            GetPrivateProfileString("LoadParameter", "TARGET_IP", "", stmp, stmp.Capacity, @"\Setting.ini");
+            tb3.Text = stmp.ToString();
+            stmp.Clear();
+            GetPrivateProfileString("LoadParameter", "TARGET_PORT", "", stmp, stmp.Capacity, @"\Setting.ini");
+            tb4.Text = stmp.ToString();
+            stmp.Clear();
+            GetPrivateProfileString("LoadParameter", "TARGET_AET", "", stmp, stmp.Capacity, @"\Setting.ini");
+            tb5.Text = stmp.ToString();
+            stmp.Clear();
+
             listBox1.Items.Add("User Setting Loading Complete[" + DateTime.Now+"]");
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            
-            //TODO : all textbox (text1,2,3,4,5,) add need;
+        {   //TODO : all textbox (text1,2,3,4,5,) add need;
+            //WritePrivateProfileString(string section, string key, string val, string filePath);
         }
 
 
