@@ -42,27 +42,42 @@ namespace DicomPACS_Client
             tb5 = textBox5;
 
             StringBuilder stmp = new StringBuilder();
-            GetPrivateProfileString("LoadParameter", "PATH", "", stmp, stmp.Capacity, @"\Setting.ini");
+            GetPrivateProfileString("LoadParameter", "PATH", "", stmp, stmp.MaxCapacity, ".\\LoadSetting.ini");
             tb1.Text = stmp.ToString();
             stmp.Clear();
-            GetPrivateProfileString("LoadParameter", "SOURCE_AET", "", stmp, stmp.Capacity, @"\Setting.ini");
+            GetPrivateProfileString("LoadParameter", "SOURCE_AET", "", stmp, stmp.Capacity, ".\\LoadSetting.ini");
             tb2.Text = stmp.ToString();
             stmp.Clear();
-            GetPrivateProfileString("LoadParameter", "TARGET_IP", "", stmp, stmp.Capacity, @"\Setting.ini");
+            GetPrivateProfileString("LoadParameter", "TARGET_IP", "", stmp, stmp.Capacity, ".\\LoadSetting.ini");
             tb3.Text = stmp.ToString();
             stmp.Clear();
-            GetPrivateProfileString("LoadParameter", "TARGET_PORT", "", stmp, stmp.Capacity, @"\Setting.ini");
+            GetPrivateProfileString("LoadParameter", "TARGET_PORT", "", stmp, stmp.Capacity, ".\\LoadSetting.ini");
             tb4.Text = stmp.ToString();
             stmp.Clear();
-            GetPrivateProfileString("LoadParameter", "TARGET_AET", "", stmp, stmp.Capacity, @"\Setting.ini");
+            GetPrivateProfileString("LoadParameter", "TARGET_AET", "", stmp, stmp.Capacity, ".\\LoadSetting.ini");
             tb5.Text = stmp.ToString();
             stmp.Clear();
 
             listBox1.Items.Add("User Setting Loading Complete[" + DateTime.Now+"]");
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {   //TODO : all textbox (text1,2,3,4,5,) add need;
-            //WritePrivateProfileString(string section, string key, string val, string filePath);
+        {   
+            WritePrivateProfileString("LoadParameter", "PATH", tb1.Text, ".\\LoadSetting.ini");
+            WritePrivateProfileString("LoadParameter", "PATH", tb2.Text, ".\\LoadSetting.ini");
+            WritePrivateProfileString("LoadParameter", "PATH", tb3.Text, ".\\LoadSetting.ini");
+            WritePrivateProfileString("LoadParameter", "PATH", tb4.Text, ".\\LoadSetting.ini");
+            WritePrivateProfileString("LoadParameter", "PATH", tb5.Text, ".\\LoadSetting.ini");
+
+
+
+
+
+
+            //TODO : all textbox (text1,2,3,4,5,) add need;
+
+
+
+
         }
 
 
