@@ -79,7 +79,9 @@ namespace DicomPACS_Client
 
             foreach (string dir in dirs)
             {
-                
+                //TODO : 먼저 INI파일이 있는지를 확인해야합니다. 만약 없다면 그냥 넘기는 코드를 짜야함.
+
+
                 //Example : GetPrivateProfileString("WookoaSetting", "TopAlways", "", topAlways, topAlways.Capacity, "C:\\Setting.ini");
                 //Example : WritePrivateProfileString("WookoaSetting", "ViewTray", "false", "C:\\Setting.ini");
                 //not need dirs name
@@ -95,7 +97,6 @@ namespace DicomPACS_Client
                 GetPrivateProfileString("INFO", "FILE_CNT", "", FILE_CNT, FILE_CNT.Capacity, dir + @"\Setting.ini");
                 GetPrivateProfileString("INFO", "REQUEST", "", REQUEST, REQUEST.Capacity, dir + @"\Setting.ini");
                 GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, dir + @"\Setting.ini");
-                
                 
                 Console.Out.WriteLine(dir);
 

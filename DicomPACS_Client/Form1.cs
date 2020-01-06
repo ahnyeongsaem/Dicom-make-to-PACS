@@ -63,21 +63,14 @@ namespace DicomPACS_Client
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {   
             WritePrivateProfileString("LoadParameter", "PATH", tb1.Text, ".\\LoadSetting.ini");
-            WritePrivateProfileString("LoadParameter", "PATH", tb2.Text, ".\\LoadSetting.ini");
-            WritePrivateProfileString("LoadParameter", "PATH", tb3.Text, ".\\LoadSetting.ini");
-            WritePrivateProfileString("LoadParameter", "PATH", tb4.Text, ".\\LoadSetting.ini");
-            WritePrivateProfileString("LoadParameter", "PATH", tb5.Text, ".\\LoadSetting.ini");
+            WritePrivateProfileString("LoadParameter", "SOURCE_AET", tb2.Text, ".\\LoadSetting.ini");
+            WritePrivateProfileString("LoadParameter", "TARGET_IP", tb3.Text, ".\\LoadSetting.ini");
+            WritePrivateProfileString("LoadParameter", "TARGET_PORT", tb4.Text, ".\\LoadSetting.ini");
+            WritePrivateProfileString("LoadParameter", "TARGET_AET", tb5.Text, ".\\LoadSetting.ini");
 
-
-
-
-
-
+           
             //TODO : all textbox (text1,2,3,4,5,) add need;
-
-
-
-
+            
         }
 
 
