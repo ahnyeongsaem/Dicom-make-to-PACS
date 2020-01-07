@@ -81,6 +81,8 @@ namespace DicomPACS_Client
             {
                 //TODO : 먼저 INI파일이 있는지를 확인해야합니다. 만약 없다면 그냥 넘기는 코드를 짜야함.
 
+                string existSettingIniStr = dir + @"\Setting.ini";
+                FileInfo fileInfo = new FileInfo(existSettingIniStr);
 
                 //Example : GetPrivateProfileString("WookoaSetting", "TopAlways", "", topAlways, topAlways.Capacity, "C:\\Setting.ini");
                 //Example : WritePrivateProfileString("WookoaSetting", "ViewTray", "false", "C:\\Setting.ini");
