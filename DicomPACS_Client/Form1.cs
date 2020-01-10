@@ -29,7 +29,7 @@ namespace DicomPACS_Client
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
-
+        //TODO : add Timer Need
 
         private void Form1_Load(object sender, EventArgs e)
         {
