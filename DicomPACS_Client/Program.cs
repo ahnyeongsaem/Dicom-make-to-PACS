@@ -200,8 +200,11 @@ namespace DicomPACS_Client
             return TargetFile;
         }
 
-        private static void FillDataset(DicomDataset dataset)
-        {
+        private static void FillDataset(DicomDataset dataset,
+            string patientid, string patientname, string patientsex, string patientbod, string studydate, string studytime, string studydesc,
+            string assessionno, string ordercode)
+
+        {//bod = birthdate
             dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
             dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());  //스터디는 촬영 부위
             dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid()); //예 : 이미지 10장을 묶는것 시리즈 상위 그룹이 있는듯?
@@ -219,7 +222,8 @@ namespace DicomPACS_Client
             /// A string of characters with one of the following formats
             /// -- nnnD, nnnW, nnnM, nnnY; where nnn shall contain the number of days for D, weeks for W, months for M, or years for Y.
             ///Example: "018M" would represent an age of 18 months.
-            dataset.Add(DicomTag.PatientAge,"024Y"); 
+            dataset.Add(DicomTag.PatientAge, "024Y"); 
+           
             
             dataset.Add(DicomTag.StudyDate, DateTime.Now);
             dataset.Add(DicomTag.StudyTime, DateTime.Now);
@@ -227,8 +231,8 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.ReferringPhysicianName, string.Empty);
             dataset.Add(DicomTag.StudyID, "1");
             dataset.Add(DicomTag.SeriesNumber, "1");
-            dataset.Add(DicomTag.ModalitiesInStudy, "CR");
-            dataset.Add(DicomTag.Modality, "CR");
+            dataset.Add(DicomTag.ModalitiesInStudy, "OT");
+            dataset.Add(DicomTag.Modality, "OT");
             dataset.Add(DicomTag.NumberOfStudyRelatedInstances, "1");
             dataset.Add(DicomTag.NumberOfStudyRelatedSeries, "1");
             dataset.Add(DicomTag.NumberOfSeriesRelatedInstances, "1");
