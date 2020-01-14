@@ -13,6 +13,8 @@ using Dicom;
 using Dicom.Imaging;
 using Dicom.IO.Buffer;
 using Dicom.Network;
+using System.Globalization;
+
 namespace DicomPACS_Client
 {
     static class DicomCtrl
@@ -212,17 +214,28 @@ namespace DicomPACS_Client
 
             dataset.Add(DicomTag.BitsAllocated, "8");//add bit allocate but pixeldata delete
 
-            dataset.Add(DicomTag.PatientID, "790830");
+            dataset.Add(DicomTag.PatientID, patientid);
 
             dataset.Add(DicomTag.SpecificCharacterSet, "ISO 2022 IR 149");
 
-            dataset.Add(DicomTag.PatientName, "안영샘"); 
-            dataset.Add(DicomTag.PatientBirthDate, "1990726");
-            dataset.Add(DicomTag.PatientSex, "M");
+            dataset.Add(DicomTag.PatientName, patientname); 
+            dataset.Add(DicomTag.PatientBirthDate, patientbod);
+            dataset.Add(DicomTag.PatientSex, patientsex);
             /// A string of characters with one of the following formats
             /// -- nnnD, nnnW, nnnM, nnnY; where nnn shall contain the number of days for D, weeks for W, months for M, or years for Y.
             ///Example: "018M" would represent an age of 18 months.
-            dataset.Add(DicomTag.PatientAge, "024Y"); 
+
+            //TODO : Patient Age modify by birthday date
+            DateTime now = DateTime.Today;
+            int age = now.Year - DateTime.Parse(patientbod,"YYYYMMDD").Year;
+            DateTime theTime = DateTime.ParseExact(time,
+                                        "yyyyMMdd",
+                                        CultureInfo.InvariantCulture,
+                                        DateTimeStyles.None);
+
+            if (now < DateTime.Parse(patientbod).AddYears(age)) age--;
+
+            dataset.Add(DicomTag.PatientAge, "024Y");  //TODO : Patient Age modify by birthday date
            
             
             dataset.Add(DicomTag.StudyDate, DateTime.Now);
