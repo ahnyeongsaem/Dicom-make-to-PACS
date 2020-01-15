@@ -226,16 +226,19 @@ namespace DicomPACS_Client
             ///Example: "018M" would represent an age of 18 months.
 
             //TODO : Patient Age modify by birthday date
-            DateTime now = DateTime.Today;
-            int age = now.Year - DateTime.Parse(patientbod,"YYYYMMDD").Year;
-            DateTime theTime = DateTime.ParseExact(time,
+            
+            DateTime theTime = DateTime.ParseExact(patientbod,
                                         "yyyyMMdd",
                                         CultureInfo.InvariantCulture,
                                         DateTimeStyles.None);
-
+            DateTime now = DateTime.Today;
+            int age = now.Year - theTime.Year;
             if (now < DateTime.Parse(patientbod).AddYears(age)) age--;
 
-            dataset.Add(DicomTag.PatientAge, "024Y");  //TODO : Patient Age modify by birthday date
+            string agefmt = "000";
+            
+
+            dataset.Add(DicomTag.PatientAge, age.ToString(agefmt)+"Y");  //TODO : Patient Age modify by birthday date
            
             
             dataset.Add(DicomTag.StudyDate, DateTime.Now);
