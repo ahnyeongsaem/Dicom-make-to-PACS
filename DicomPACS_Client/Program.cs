@@ -86,7 +86,7 @@ namespace DicomPACS_Client
                 FileInfo fileInfo = new FileInfo(existSettingIniStr);
                 if(!fileInfo.Exists)
                 {
-                    //TODO : need write log lists
+                    Form1.lb1.Items.Add("SettingINI not exist : "+ dir);
                     continue;
                 }
 
@@ -106,12 +106,21 @@ namespace DicomPACS_Client
                 GetPrivateProfileString("INFO", "REQUEST", "", REQUEST, REQUEST.Capacity, dir + @"\Setting.ini");
                 GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, dir + @"\Setting.ini");
                 
-                Console.Out.WriteLine(dir);
+
+
+                if(SEND_RESULT.ToString()=="O")
+                {
+                    Form1.lb1.Items.Add("SettingINI not exist : " + dir);
+                    continue;
+                    
+                }
 
                 List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
 
                 DicomDataset dataset = new DicomDataset();
-                FillDataset(dataset); //TODO : change need priavate profile string
+                FillDataset(dataset, 
+                    PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()); //TODO : change need priavate profile string
+
 
                 bool imageDataSetFlag = false;
                 foreach (string imgfile in imgFiles)
@@ -158,6 +167,9 @@ namespace DicomPACS_Client
                 dicomfile.Save(TargetFile); //todo : dicom file save error
                 SendToPACS(TargetFile,Form1.tb2.Text, Form1.tb3.Text,int.Parse(Form1.tb4.Text), Form1.tb5.Text);
 
+
+                WritePrivateProfileString("INFO", "SEND_RESULT", "O", dir + @"\Setting.ini");
+
             }
 
         }
@@ -175,8 +187,8 @@ namespace DicomPACS_Client
             MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
 
             DicomDataset dataset = new DicomDataset();
-            FillDataset(dataset);
-
+            //FillDataset(dataset);
+            //TODO : make dicom test
             dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
             dataset.Add(DicomTag.Rows, (ushort)rows);
             dataset.Add(DicomTag.Columns, (ushort)columns);
@@ -237,13 +249,20 @@ namespace DicomPACS_Client
 
             string agefmt = "000";
             
-
             dataset.Add(DicomTag.PatientAge, age.ToString(agefmt)+"Y");  //TODO : Patient Age modify by birthday date
            
             
-            dataset.Add(DicomTag.StudyDate, DateTime.Now);
-            dataset.Add(DicomTag.StudyTime, DateTime.Now);
-            dataset.Add(DicomTag.AccessionNumber, string.Empty);
+            dataset.Add(DicomTag.StudyDate, studydate);
+            //dataset.Add(DicomTag.StudyDate, DateTime.Now);
+            dataset.Add(DicomTag.StudyTime, studytime);
+            //dataset.Add(DicomTag.StudyTime, DateTime.Now);
+            dataset.Add(DicomTag.StudyDescription, studydesc);
+            //추가된 내용
+            dataset.Add(DicomTag.AccessionNumber, assessionno);
+            //dataset.Add(DicomTag.AccessionNumber, string.Empty);
+
+            //오더코드는 없는데...
+            
             dataset.Add(DicomTag.ReferringPhysicianName, string.Empty);
             dataset.Add(DicomTag.StudyID, "1");
             dataset.Add(DicomTag.SeriesNumber, "1");

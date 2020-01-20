@@ -23,6 +23,7 @@ namespace DicomPACS_Client
         public static TextBox tb3; //targetIP
         public static TextBox tb4; //targetPort
         public static TextBox tb5; //targetAET
+        public static ListBox lb1; //log listbox
 
         [DllImport("kernel32")]
         private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
@@ -40,6 +41,7 @@ namespace DicomPACS_Client
             tb3 = textBox3;
             tb4 = textBox4;
             tb5 = textBox5;
+            lb1 = listBox1;
 
             StringBuilder stmp = new StringBuilder();
             GetPrivateProfileString("LoadParameter", "PATH", "", stmp, stmp.MaxCapacity, ".\\LoadSetting.ini");
@@ -74,7 +76,7 @@ namespace DicomPACS_Client
         }
 
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             /*
             DicomCtrl.MakeDicom(@"C:\Users\elysium1\Source\Repos\Dicom-make-to-PACS\DicomPACS_Client\testimage.png",

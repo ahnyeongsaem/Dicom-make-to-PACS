@@ -60,7 +60,7 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "Make Dicom";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // button2
             // 
@@ -78,7 +78,7 @@
             this.listBox1.ItemHeight = 12;
             this.listBox1.Location = new System.Drawing.Point(31, 149);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(380, 280);
+            this.listBox1.Size = new System.Drawing.Size(599, 280);
             this.listBox1.TabIndex = 2;
             // 
             // button3
