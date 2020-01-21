@@ -110,7 +110,7 @@ namespace DicomPACS_Client
 
                 if(SEND_RESULT.ToString()=="O")
                 {
-                    Form1.lb1.Items.Add("SettingINI not exist : " + dir);
+                    Form1.lb1.Items.Add("Already dcm sended : " + dir);
                     continue;
                     
                 }
