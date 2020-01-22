@@ -86,7 +86,7 @@ namespace DicomPACS_Client
                 FileInfo fileInfo = new FileInfo(existSettingIniStr);
                 if(!fileInfo.Exists)
                 {
-                    Form1.lb1.Items.Add("SettingINI not exist : "+ dir);
+                    Form1.lb1.Items.Add("SettingINI not exist : "+ dir + "[" + DateTime.Now + "]");
                     continue;
                 }
 
@@ -110,7 +110,7 @@ namespace DicomPACS_Client
 
                 if(SEND_RESULT.ToString()=="O")
                 {
-                    Form1.lb1.Items.Add("Already dcm sended : " + dir);
+                    Form1.lb1.Items.Add("Already dcm sended : " + dir + "[" + DateTime.Now + "]");
                     continue;
                     
                 }
@@ -130,6 +130,8 @@ namespace DicomPACS_Client
                         continue;
                     }
 
+
+                    
                     Bitmap bitmap = new Bitmap(imgfile);
                     bitmap = GetValidImage(bitmap);
 
@@ -169,6 +171,7 @@ namespace DicomPACS_Client
 
 
                 WritePrivateProfileString("INFO", "SEND_RESULT", "O", dir + @"\Setting.ini");
+                Form1.lb1.Items.Add("dcm send finish : " + dir + "["+DateTime.Now+"]");
 
             }
 
