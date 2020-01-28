@@ -25,6 +25,7 @@ namespace DicomPACS_Client
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+
         }
 
 
@@ -52,7 +53,7 @@ namespace DicomPACS_Client
         private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
-        
+
 
         /// <summary>
         /// TODO : 이미지 폴더를 통째로 dicom 파일로 만드는것(ini까지 포함해서)
@@ -81,98 +82,106 @@ namespace DicomPACS_Client
 
             foreach (string dir in dirs)
             {
-                
-                string existSettingIniStr = dir + @"\info.ini";
-                FileInfo fileInfo = new FileInfo(existSettingIniStr);
-                if(!fileInfo.Exists)
+                try
                 {
-                    Form1.lb1.Items.Add("SettingINI not exist : "+ dir + "[" + DateTime.Now + "]");
-                    continue;
-                }
-
-                //Example : GetPrivateProfileString("WookoaSetting", "TopAlways", "", topAlways, topAlways.Capacity, "C:\\info.ini");
-                //Example : WritePrivateProfileString("WookoaSetting", "ViewTray", "false", "C:\\info.ini");
-                //not need dirs name
-                GetPrivateProfileString("INFO", "PATIENT_ID", "", PATIENT_ID, PATIENT_ID.Capacity, dir + @"\info.ini");
-                GetPrivateProfileString("INFO", "PATIENT_NAME", "", PATIENT_NAME, PATIENT_NAME.Capacity, dir + @"\info.ini");
-                GetPrivateProfileString("INFO", "PATIENT_SEX", "", PATIENT_SEX, PATIENT_SEX.Capacity,  dir + @"\info.ini");
-                GetPrivateProfileString("INFO", "PATIENT_BOD", "", PATIENT_BOD, PATIENT_BOD.Capacity,  dir + @"\info.ini");
-                GetPrivateProfileString("INFO", "STUDY_DATE", "", STUDY_DATE, STUDY_DATE.Capacity, dir + @"\info.ini");
-                GetPrivateProfileString("INFO", "STUDY_TIME", "", STUDY_TIME, STUDY_TIME.Capacity,  dir + @"\info.ini");
-                GetPrivateProfileString("INFO", "STUDY_DESC", "", STUDY_DESC, STUDY_DESC.Capacity, dir + @"\info.ini");
-                GetPrivateProfileString("INFO", "ACCESSION_NO", "", ACCESSION_NO, ACCESSION_NO.Capacity,  dir + @"\info.ini");
-                GetPrivateProfileString("INFO", "ORDER_CODE", "", ORDER_CODE, ORDER_CODE.Capacity, dir + @"\info.ini");
-                GetPrivateProfileString("INFO", "FILE_CNT", "", FILE_CNT, FILE_CNT.Capacity, dir + @"\info.ini");
-                GetPrivateProfileString("INFO", "REQUEST", "", REQUEST, REQUEST.Capacity, dir + @"\info.ini");
-                GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, dir + @"\info.ini");
-                
 
 
-                if(SEND_RESULT.ToString()=="O")
-                {
-                    Form1.lb1.Items.Add("Already dcm sended : " + dir + "[" + DateTime.Now + "]");
-                    continue;
-                    
-                }
-
-                List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
-
-                DicomDataset dataset = new DicomDataset();
-                FillDataset(dataset, 
-                    PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()); //TODO : change need priavate profile string
-
-
-                bool imageDataSetFlag = false;
-                foreach (string imgfile in imgFiles)
-                {
-                    if(string.Compare(imgfile.Substring(imgfile.Length-3,3),"png")!=0)
+                    string existSettingIniStr = dir + @"\info.ini";
+                    FileInfo fileInfo = new FileInfo(existSettingIniStr);
+                    if (!fileInfo.Exists)
                     {
+                        Form1.lb1.Items.Add("infoINI not exist : " + dir + "[" + DateTime.Now + "]");
                         continue;
                     }
 
+                    //Example : GetPrivateProfileString("WookoaSetting", "TopAlways", "", topAlways, topAlways.Capacity, "C:\\info.ini");
+                    //Example : WritePrivateProfileString("WookoaSetting", "ViewTray", "false", "C:\\info.ini");
+                    //not need dirs name
+                    GetPrivateProfileString("INFO", "PATIENT_ID", "", PATIENT_ID, PATIENT_ID.Capacity, dir + @"\info.ini");
+                    GetPrivateProfileString("INFO", "PATIENT_NAME", "", PATIENT_NAME, PATIENT_NAME.Capacity, dir + @"\info.ini");
+                    GetPrivateProfileString("INFO", "PATIENT_SEX", "", PATIENT_SEX, PATIENT_SEX.Capacity, dir + @"\info.ini");
+                    GetPrivateProfileString("INFO", "PATIENT_BOD", "", PATIENT_BOD, PATIENT_BOD.Capacity, dir + @"\info.ini");
+                    GetPrivateProfileString("INFO", "STUDY_DATE", "", STUDY_DATE, STUDY_DATE.Capacity, dir + @"\info.ini");
+                    GetPrivateProfileString("INFO", "STUDY_TIME", "", STUDY_TIME, STUDY_TIME.Capacity, dir + @"\info.ini");
+                    GetPrivateProfileString("INFO", "STUDY_DESC", "", STUDY_DESC, STUDY_DESC.Capacity, dir + @"\info.ini");
+                    GetPrivateProfileString("INFO", "ACCESSION_NO", "", ACCESSION_NO, ACCESSION_NO.Capacity, dir + @"\info.ini");
+                    GetPrivateProfileString("INFO", "ORDER_CODE", "", ORDER_CODE, ORDER_CODE.Capacity, dir + @"\info.ini");
+                    GetPrivateProfileString("INFO", "FILE_CNT", "", FILE_CNT, FILE_CNT.Capacity, dir + @"\info.ini");
+                    GetPrivateProfileString("INFO", "REQUEST", "", REQUEST, REQUEST.Capacity, dir + @"\info.ini");
+                    GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, dir + @"\info.ini");
 
-                    
-                    Bitmap bitmap = new Bitmap(imgfile);
-                    bitmap = GetValidImage(bitmap);
 
-                    int rows, columns;
-                    byte[] pixels = GetPixels(bitmap, out rows, out columns);
 
-                    MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
-
-                    if(imageDataSetFlag==false)
+                    if (SEND_RESULT.ToString() == "O")
                     {
-                        dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
-                        dataset.Add(DicomTag.Rows, (ushort)rows);
-                        dataset.Add(DicomTag.Columns, (ushort)columns); //TODO : ADD Dcm image count check
-                        imageDataSetFlag = true;
+                        Form1.lb1.Items.Add("Already dcm sended : " + dir + "[" + DateTime.Now + "]");
+                        continue;
+
                     }
 
-                    DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
+                    List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
 
-                    pixelData.BitsStored = 8;
-                    pixelData.SamplesPerPixel = 3; // 3 : red/green/blue  1 : CT/MR Single Grey Scale
-                    pixelData.HighBit = 7;
-                    pixelData.PixelRepresentation = 0;
-                    pixelData.PlanarConfiguration = 0;
+                    DicomDataset dataset = new DicomDataset();
+                    FillDataset(dataset,
+                        PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()); //TODO : change need priavate profile string
 
-                    pixelData.AddFrame(buffer);
-                    //TODO : Need to check if it is created dcm in directory
-                    
+
+                    bool imageDataSetFlag = false;
+                    foreach (string imgfile in imgFiles)
+                    {
+                        if (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "png") != 0)
+                        {
+                            continue;
+                        }
+
+
+
+                        Bitmap bitmap = new Bitmap(imgfile);
+                        bitmap = GetValidImage(bitmap);
+
+                        int rows, columns;
+                        byte[] pixels = GetPixels(bitmap, out rows, out columns);
+
+                        MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
+
+                        if (imageDataSetFlag == false)
+                        {
+                            dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
+                            dataset.Add(DicomTag.Rows, (ushort)rows);
+                            dataset.Add(DicomTag.Columns, (ushort)columns); //TODO : ADD Dcm image count check
+                            imageDataSetFlag = true;
+                        }
+
+                        DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
+
+                        pixelData.BitsStored = 8;
+                        pixelData.SamplesPerPixel = 3; // 3 : red/green/blue  1 : CT/MR Single Grey Scale
+                        pixelData.HighBit = 7;
+                        pixelData.PixelRepresentation = 0;
+                        pixelData.PlanarConfiguration = 0;
+
+                        pixelData.AddFrame(buffer);
+                        //TODO : Need to check if it is created dcm in directory
+
+                    }
+
+                    DicomFile dicomfile = new DicomFile(dataset);
+
+                    //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
+                    string TargetFile = Path.Combine(dir, dataset.GetString(DicomTag.SOPInstanceUID) + ".dcm");
+
+                    dicomfile.Save(TargetFile); //todo : dicom file save error
+                    SendToPACS(TargetFile, Form1.tb2.Text, Form1.tb3.Text, int.Parse(Form1.tb4.Text), Form1.tb5.Text);
+
+
+                    WritePrivateProfileString("INFO", "SEND_RESULT", "O", dir + @"\info.ini");
+                    Form1.lb1.Items.Add("dcm send finish : " + dir + "[" + DateTime.Now + "]");
                 }
-                
-                DicomFile dicomfile = new DicomFile(dataset);
-
-                //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
-                string TargetFile = Path.Combine(dir,dataset.GetString(DicomTag.SOPInstanceUID)+  ".dcm");
-
-                dicomfile.Save(TargetFile); //todo : dicom file save error
-                SendToPACS(TargetFile,Form1.tb2.Text, Form1.tb3.Text,int.Parse(Form1.tb4.Text), Form1.tb5.Text);
-
-
-                WritePrivateProfileString("INFO", "SEND_RESULT", "O", dir + @"\info.ini");
-                Form1.lb1.Items.Add("dcm send finish : " + dir + "["+DateTime.Now+"]");
-
+                catch(Exception e)
+                {
+                    Form1.lb1.Items.Add("Makedicomfolder error exception : " + e.Message);
+                    Form1.lb1.Items.Add(dir + "[" + DateTime.Now + "]");
+                }
             }
 
         }
@@ -233,7 +242,7 @@ namespace DicomPACS_Client
 
             dataset.Add(DicomTag.SpecificCharacterSet, "ISO 2022 IR 149");
 
-            dataset.Add(DicomTag.PatientName, patientname); 
+            dataset.Add(DicomTag.PatientName, patientname);
             dataset.Add(DicomTag.PatientBirthDate, patientbod);
             dataset.Add(DicomTag.PatientSex, patientsex);
             /// A string of characters with one of the following formats
@@ -241,7 +250,7 @@ namespace DicomPACS_Client
             ///Example: "018M" would represent an age of 18 months.
 
             //TODO : Patient Age modify by birthday date
-            
+
             DateTime theTime = DateTime.ParseExact(patientbod,
                                         "yyyyMMdd",
                                         CultureInfo.InvariantCulture,
@@ -250,11 +259,11 @@ namespace DicomPACS_Client
             int age = now.Year - theTime.Year;
             if (now < DateTime.Parse(patientbod).AddYears(age)) age--;
 
-            string agefmt = "000"; 
-            
-            dataset.Add(DicomTag.PatientAge, age.ToString(agefmt)+"Y");  //TODO : Patient Age modify by birthday date
-           
-            
+            string agefmt = "000";
+
+            dataset.Add(DicomTag.PatientAge, age.ToString(agefmt) + "Y");  //TODO : Patient Age modify by birthday date
+
+
             dataset.Add(DicomTag.StudyDate, studydate);
             //dataset.Add(DicomTag.StudyDate, DateTime.Now);
             dataset.Add(DicomTag.StudyTime, studytime);
@@ -265,7 +274,7 @@ namespace DicomPACS_Client
             //dataset.Add(DicomTag.AccessionNumber, string.Empty);
 
             //오더코드는 없는데...
-            
+
             dataset.Add(DicomTag.ReferringPhysicianName, string.Empty);
             dataset.Add(DicomTag.StudyID, "1");
             dataset.Add(DicomTag.SeriesNumber, "1");
@@ -277,8 +286,8 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.PatientOrientation, @"F\A"); //Patient direction of the rows and columns of the image 
             dataset.Add(DicomTag.ImageLaterality, "U");
 
-            dataset.Add(DicomTag.ContentDate, DateTime.Now); 
-            dataset.Add(DicomTag.ContentTime, DateTime.Now); 
+            dataset.Add(DicomTag.ContentDate, DateTime.Now);
+            dataset.Add(DicomTag.ContentTime, DateTime.Now);
             dataset.Add(DicomTag.InstanceNumber, "1");
             dataset.Add(DicomTag.ConversionType, "WSD"); //Describes the kind of image conversion.
         }
@@ -296,7 +305,7 @@ namespace DicomPACS_Client
         private static Bitmap GetValidImage(Bitmap bitmap)
         {
             if (bitmap.PixelFormat != PixelFormat.Format24bppRgb)
-            {   
+            {
                 Bitmap old = bitmap;
                 using (old)
                 {
@@ -354,10 +363,11 @@ namespace DicomPACS_Client
             pClient.NegotiateAsyncOps();
             pClient.AddRequest(new DicomCStoreRequest(m_pDicomFile, DicomPriority.Medium));
             pClient.Send(targetIP, targetPort, false, sourceAET, targetAET);
-            
+
+
 
         }
-       
+
 
     }
 
