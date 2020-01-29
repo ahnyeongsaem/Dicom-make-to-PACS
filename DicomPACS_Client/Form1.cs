@@ -117,7 +117,10 @@ namespace DicomPACS_Client
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-
+            if(checkBox1.Checked==true)
+            {
+                DicomCtrl.MakeDicominFolder(textBox1.Text);
+            }
         }
     }
 }
