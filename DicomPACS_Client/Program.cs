@@ -257,7 +257,10 @@ namespace DicomPACS_Client
                                         DateTimeStyles.None);
             DateTime now = DateTime.Today;
             int age = now.Year - theTime.Year;
-            if (now < DateTime.Parse(patientbod).AddYears(age)) age--;
+            if (now < DateTime.ParseExact(patientbod,
+                                        "yyyyMMdd",
+                                        CultureInfo.InvariantCulture,
+                                        DateTimeStyles.None).AddYears(age)) age--;
 
             string agefmt = "000";
 
