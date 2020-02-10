@@ -134,6 +134,8 @@ namespace DicomPACS_Client
 
 
                 bool imageDataSetFlag = false;
+
+                DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
                 foreach (string imgfile in imgFiles)
                 {
                     if (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "png") == 0 )
@@ -167,7 +169,6 @@ namespace DicomPACS_Client
                         imageDataSetFlag = true;
                     }
 
-                    DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
 
                     pixelData.BitsStored = 8;
                     pixelData.SamplesPerPixel = 3; // 3 : red/green/blue  1 : CT/MR Single Grey Scale
