@@ -136,7 +136,15 @@ namespace DicomPACS_Client
                 bool imageDataSetFlag = false;
                 foreach (string imgfile in imgFiles)
                 {
-                    if (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "png") != 0)
+                    if (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "png") == 0 )
+                    {
+                        
+                    }
+                    else if (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "jpg") == 0)
+                    {
+
+                    }
+                    else
                     {
                         continue;
                     }
