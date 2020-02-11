@@ -161,15 +161,11 @@ namespace DicomPACS_Client
 
                     Bitmap bitmap = new Bitmap(imgfile);
                     bitmap = GetValidImage(bitmap);
-
+                    
                     int rows, columns;
-                    byte[] pixels = GetPixels(bitmap, out rows, out columns);
-
-                    MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
-
-
-                    double ratioCol = sizeCOL / (double)columns;
-                    double ratioRow = sizeROW / (double)rows;
+                    
+                    double ratioCol = sizeCOL / (double)bitmap.Width;
+                    double ratioRow = sizeROW / (double)bitmap.Height;
                     
 
                     double ratio = Math.Min(sizeROW, sizeCOL);
@@ -179,7 +175,10 @@ namespace DicomPACS_Client
 
                     Size resize = new Size(newWidth, newHeight);
                     Bitmap resizeImage = new Bitmap(bitmap, resize);
+                    byte[] pixels = GetPixels(resizeImage, out rows, out columns);
 
+                    
+                    MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
 
                     if (imageDataSetFlag == false)
                     {
