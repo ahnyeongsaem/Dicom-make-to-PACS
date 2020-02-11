@@ -55,6 +55,9 @@ namespace DicomPACS_Client
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
 
 
+        
+
+
         /// <summary>
         /// TODO : 이미지 폴더를 통째로 dicom 파일로 만드는것(ini까지 포함해서)
         /// 를 만들어야함.
@@ -64,6 +67,9 @@ namespace DicomPACS_Client
         /// <returns></returns>
         public static void MakeDicominFolder(string ImageFileFolder)//TODO: need target path change
         {
+            //나중에 다른 Dicom 파일이면 이걸 바꾸는걸 꼭 추가해야합니다.
+            int sizeCOL=793, sizeROW=1122;
+
             List<string> dirs = new List<string>(Directory.EnumerateDirectories(ImageFileFolder));
             //all dirs find
 
@@ -161,14 +167,27 @@ namespace DicomPACS_Client
 
                     MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
 
+
+                    double ratioCol = sizeCOL / (double)columns;
+                    double ratioRow = sizeROW / (double)rows;
+                    
+
+                    double ratio = Math.Min(sizeROW, sizeCOL);
+
+                    int newWidth = (int)(sizeCOL * ratio);
+                    int newHeight = (int)(sizeROW * ratio);
+
+                    Size resize = new Size(newWidth, newHeight);
+                    Bitmap resizeImage = new Bitmap(bitmap, resize);
+
+
                     if (imageDataSetFlag == false)
                     {
                         dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
-                        dataset.Add(DicomTag.Rows, (ushort)rows);
-                        dataset.Add(DicomTag.Columns, (ushort)columns); //TODO : ADD Dcm image count check
+                        dataset.Add(DicomTag.Rows, (ushort)sizeROW);
+                        dataset.Add(DicomTag.Columns, (ushort)sizeCOL); //TODO : ADD Dcm image count check
                         imageDataSetFlag = true;
                     }
-
 
                     pixelData.BitsStored = 8;
                     pixelData.SamplesPerPixel = 3; // 3 : red/green/blue  1 : CT/MR Single Grey Scale
