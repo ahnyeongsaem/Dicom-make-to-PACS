@@ -86,11 +86,6 @@ namespace DicomPACS_Client
             DicomCtrl.MakeDicominFolder(textBox1.Text); //todo : target change
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            DicomCtrl.SendToPACS(@"C:\Users\elysium1\Source\Repos\Dicom-make-to-PACS\Test.dcm", "OT", "192.168.0.226", 103, "VIEWREX");
-            //TODO : modify ip arguments
-        }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -127,6 +122,36 @@ namespace DicomPACS_Client
         {//QUIT MENU
             Application.Exit();
             
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void hideToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
