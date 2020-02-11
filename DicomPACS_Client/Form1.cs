@@ -99,7 +99,7 @@ namespace DicomPACS_Client
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            this.Show();
+            Show();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -121,6 +121,12 @@ namespace DicomPACS_Client
             {
                 DicomCtrl.MakeDicominFolder(textBox1.Text);
             }
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {//QUIT MENU
+            Application.Exit();
+            
         }
     }
 }

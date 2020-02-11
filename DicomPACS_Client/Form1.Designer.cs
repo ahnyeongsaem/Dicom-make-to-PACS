@@ -105,20 +105,21 @@
             this.toolStripMenuItem1,
             this.toolStripMenuItem2});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(183, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(105, 48);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(182, 22);
-            this.toolStripMenuItem1.Text = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(104, 22);
+            this.toolStripMenuItem1.Text = "Show";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(182, 22);
-            this.toolStripMenuItem2.Text = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(104, 22);
+            this.toolStripMenuItem2.Text = "Quit";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // textBox1
             // 
