@@ -158,5 +158,10 @@ namespace DicomPACS_Client
         {
 
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
