@@ -168,14 +168,20 @@ namespace DicomPACS_Client
                     double ratioRow = sizeROW / (double)bitmap.Height;
                     
 
-                    double ratio = Math.Min(sizeROW, sizeCOL);
+                    double ratio = Math.Min(ratioRow, ratioCol);
 
                     int newWidth = (int)(sizeCOL * ratio);
                     int newHeight = (int)(sizeROW * ratio);
 
-                    Size resize = new Size(newWidth, newHeight);
-                    Bitmap resizeImage = new Bitmap(bitmap, resize);
-                    byte[] pixels = GetPixels(resizeImage, out rows, out columns);
+                    Bitmap newImage = new Bitmap(sizeROW, sizeCOL);
+                    using (Graphics g = Graphics.FromImage(newImage))
+                    {
+                        g.FillRectangle(Brushes.Black, 0, 0, newImage.Width, newImage.Height);
+                        g.DrawImage(bitmap, (sizeROW - newWidth) / 2, (sizeROW - newHeight) / 2, newWidth, newHeight);
+                    }
+
+
+                    byte[] pixels = GetPixels(newImage, out rows, out columns);
 
                     
                     MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
