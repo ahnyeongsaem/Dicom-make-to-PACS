@@ -133,8 +133,8 @@ namespace DicomPACS_Client
                     double ratioCol = sizeCOL / (double)bitmap.Width;
                     double ratioRow = sizeROW / (double)bitmap.Height;
                     double ratio = Math.Min(ratioRow, ratioCol);
-                    int newWidth = (int)(sizeCOL * ratio);
-                    int newHeight = (int)(sizeROW * ratio);
+                    int newWidth = (int)(bitmap.Width * ratio);
+                    int newHeight = (int)(bitmap.Height * ratio);
                     Bitmap newImage = new Bitmap(sizeCOL, sizeROW);
                     using (Graphics g = Graphics.FromImage(newImage))
                     {
@@ -214,8 +214,8 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
             dataset.Add(DicomTag.BitsAllocated, "8");//add bit allocate but pixeldata delete
             dataset.Add(DicomTag.PatientID, patientid);
-            dataset.Add(DicomTag.SpecificCharacterSet, "ISO 2022 IR 149");
-            dataset.Add(DicomTag.PatientName, patientname);
+            dataset.Add(DicomTag.SpecificCharacterSet, "ISO_IR 192");
+            dataset.Add(DicomTag.PatientName, DicomEncoding.GetEncoding("ISO IR 192"),patientname);
             dataset.Add(DicomTag.PatientBirthDate, patientbod);
             dataset.Add(DicomTag.PatientSex, patientsex);
             /// A string of characters with one of the following formats
