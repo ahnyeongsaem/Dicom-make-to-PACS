@@ -11,7 +11,7 @@ using System.Text;
 using Dicom;
 using Dicom.Imaging;
 using Dicom.IO.Buffer;
-using Dicom.Network;
+using Dicom.Network.Client;
 using System.Globalization;
 namespace DicomPACS_Client
 {
@@ -46,6 +46,7 @@ namespace DicomPACS_Client
         private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
+        
         /// <summary>
         /// TODO : 이미지 폴더를 통째로 dicom 파일로 만드는것(ini까지 포함해서)
         /// 를 만들어야함.
@@ -214,8 +215,8 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
             dataset.Add(DicomTag.BitsAllocated, "8");//add bit allocate but pixeldata delete
             dataset.Add(DicomTag.PatientID, patientid);
-            dataset.Add(DicomTag.SpecificCharacterSet, "ISO 2022 IR 149");
-            dataset.Add(DicomTag.PatientName, DicomEncoding.GetEncoding("ISO 2022 IR 149"),patientname);
+            dataset.Add(DicomTag.SpecificCharacterSet, "ISO_IR 192"); // ISO 2022 IR 149
+            dataset.Add(DicomTag.PatientName, DicomEncoding.GetEncoding("ISO IR 192"),patientname);
             dataset.Add(DicomTag.PatientBirthDate, patientbod);
             dataset.Add(DicomTag.PatientSex, patientsex);
             /// A string of characters with one of the following formats
@@ -314,11 +315,11 @@ namespace DicomPACS_Client
         //need button or code send to pacs
         public static void SendToPACS(string dcmfile, string sourceAET, string targetIP, int targetPort, string targetAET)
         {
-            var m_pDicomFile = DicomFile.Open(dcmfile);
-            DicomClient pClient = new DicomClient();
+            var m_pDicomFile = DicomFile.Open(dcmfile, DicomEncoding.GetEncoding("ISO IR 192"));
+            DicomClient pClient = new DicomClient(targetIP, targetPort, false, sourceAET, targetAET);
             pClient.NegotiateAsyncOps();
-            pClient.AddRequest(new DicomCStoreRequest(m_pDicomFile, DicomPriority.Medium));
-            pClient.Send(targetIP, targetPort, false, sourceAET, targetAET);
+            pClient.AddRequestAsync(new Dicom.Network.DicomCStoreRequest(m_pDicomFile, Dicom.Network.DicomPriority.Medium));
+            pClient.SendAsync();
         }
     }
 }
