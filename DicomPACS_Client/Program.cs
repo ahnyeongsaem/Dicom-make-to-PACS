@@ -315,7 +315,7 @@ namespace DicomPACS_Client
         //need button or code send to pacs
         public static void SendToPACS(string dcmfile, string sourceAET, string targetIP, int targetPort, string targetAET)
         {
-            var m_pDicomFile = DicomFile.Open(dcmfile, DicomEncoding.GetEncoding("ISO IR 192"));
+            DicomFile m_pDicomFile = DicomFile.Open(dcmfile, DicomEncoding.GetEncoding("ISO IR 192"));
             DicomClient pClient = new DicomClient(targetIP, targetPort, false, sourceAET, targetAET);
             pClient.NegotiateAsyncOps();
             pClient.AddRequestAsync(new Dicom.Network.DicomCStoreRequest(m_pDicomFile, Dicom.Network.DicomPriority.Medium));
