@@ -164,9 +164,19 @@ namespace DicomPACS_Client
                 //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
                 string TargetFile = Path.Combine(dir, dataset.GetString(DicomTag.SOPInstanceUID) + ".dcm");
                 dicomfile.Save(TargetFile); //todo : dicom file save error
-                SendToPACS(TargetFile, Form1.tb2.Text, Form1.tb3.Text, int.Parse(Form1.tb4.Text), Form1.tb5.Text);
-                WritePrivateProfileString("INFO", "SEND_RESULT", "O", dir + @"\info.ini");
-                Form1.lb1.Items.Add("dcm send finish : " + dir + "[" + DateTime.Now + "]");
+
+                try
+                { 
+                    SendToPACS(TargetFile, Form1.tb2.Text, Form1.tb3.Text, int.Parse(Form1.tb4.Text), Form1.tb5.Text);
+                    WritePrivateProfileString("INFO", "SEND_RESULT", "O", dir + @"\info.ini");
+                    Form1.lb1.Items.Add("dcm send finish : " + dir + "[" + DateTime.Now + "]");
+                }
+                catch(Exception e)
+                {
+                    WritePrivateProfileString("INFO", "SEND_RESULT", "X", dir + @"\info.ini");
+                    Form1.lb1.Items.Add("Send PACS error exception : " + e.Message +" + "+ e.StackTrace);
+                    Form1.lb1.Items.Add(dir + "[" + DateTime.Now + "]");
+                }
                 /*
             }
             catch(Exception e)
