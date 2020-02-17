@@ -55,8 +55,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -215,7 +215,7 @@
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 10000;
+            this.timer1.Interval = 15000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // label5
@@ -225,7 +225,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(92, 12);
             this.label5.TabIndex = 15;
-            this.label5.Text = "Auto Send(10s)";
+            this.label5.Text = "Auto Send(15s)";
             // 
             // checkBox1
             // 
@@ -291,6 +291,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Control Menu";
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(6, 53);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(112, 29);
+            this.button5.TabIndex = 18;
+            this.button5.Text = "Clear Log";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -301,16 +311,6 @@
             this.label6.TabIndex = 21;
             this.label6.Text = "ⓒTeamElysium Inc. All rights reserved.";
             this.label6.Click += new System.EventHandler(this.label6_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(6, 53);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(112, 29);
-            this.button5.TabIndex = 18;
-            this.button5.Text = "Clear Log";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // Form1
             // 
