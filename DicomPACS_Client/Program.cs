@@ -13,6 +13,8 @@ using Dicom.Imaging;
 using Dicom.IO.Buffer;
 using Dicom.Network.Client;
 using System.Globalization;
+using Dicom.Network.Client.EventArguments;
+
 namespace DicomPACS_Client
 {
     static class DicomCtrl
@@ -166,8 +168,25 @@ namespace DicomPACS_Client
                 dicomfile.Save(TargetFile); //todo : dicom file save error
 
                 try
-                { 
-                    SendToPACS(TargetFile, Form1.tb2.Text, Form1.tb3.Text, int.Parse(Form1.tb4.Text), Form1.tb5.Text);
+                {
+                    //SendToPACS(TargetFile, Form1.tb2.Text, Form1.tb3.Text, int.Parse(Form1.tb4.Text), Form1.tb5.Text);
+
+                    DicomFile m_pDicomFile = DicomFile.Open(TargetFile, DicomEncoding.GetEncoding("ISO IR 192"));
+                    DicomClient pClient = new DicomClient(Form1.tb3.Text, int.Parse(Form1.tb4.Text), false, Form1.tb2.Text, Form1.tb5.Text);
+                    pClient.NegotiateAsyncOps();
+                    pClient.AddRequestAsync(new Dicom.Network.DicomCStoreRequest(m_pDicomFile, Dicom.Network.DicomPriority.Medium));
+                    pClient.SendAsync();
+
+                    //error event
+                    pClient.RequestTimedOut += (object sender, RequestTimedOutEventArgs e) =>
+                    {
+                        
+                        WritePrivateProfileString("INFO", "SEND_RESULT", "X", dir + @"\info.ini");
+                        Form1.lb1.Items.Add("Send PACS error exception : " + e.Request + " + " + e.Timeout);
+                        throw new NotImplementedException();
+                    };
+                    
+
                     WritePrivateProfileString("INFO", "SEND_RESULT", "O", dir + @"\info.ini");
                     Form1.lb1.Items.Add("dcm send finish : " + dir + "[" + DateTime.Now + "]");
                 }
@@ -225,8 +244,8 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
             dataset.Add(DicomTag.BitsAllocated, "8");//add bit allocate but pixeldata delete
             dataset.Add(DicomTag.PatientID, patientid);
-            dataset.Add(DicomTag.SpecificCharacterSet, "ISO_IR 192"); // ISO 2022 IR 149
-            dataset.Add(DicomTag.PatientName, DicomEncoding.GetEncoding("ISO IR 192"),patientname);
+            dataset.Add(DicomTag.SpecificCharacterSet, "ISO 2022 IR 149"); // ISO 2022 IR 149
+            dataset.Add(DicomTag.PatientName, DicomEncoding.GetEncoding("ISO 2022 IR 149"),patientname);
             dataset.Add(DicomTag.PatientBirthDate, patientbod);
             dataset.Add(DicomTag.PatientSex, patientsex);
             /// A string of characters with one of the following formats
@@ -325,11 +344,17 @@ namespace DicomPACS_Client
         //need button or code send to pacs
         public static void SendToPACS(string dcmfile, string sourceAET, string targetIP, int targetPort, string targetAET)
         {
-            DicomFile m_pDicomFile = DicomFile.Open(dcmfile, DicomEncoding.GetEncoding("ISO IR 192"));
+            
+            DicomFile m_pDicomFile = DicomFile.Open(dcmfile, DicomEncoding.GetEncoding("ISO 2022 IR 149"));
             DicomClient pClient = new DicomClient(targetIP, targetPort, false, sourceAET, targetAET);
             pClient.NegotiateAsyncOps();
             pClient.AddRequestAsync(new Dicom.Network.DicomCStoreRequest(m_pDicomFile, Dicom.Network.DicomPriority.Medium));
             pClient.SendAsync();
+
+            //error event
+            
+            
         }
+
     }
 }
