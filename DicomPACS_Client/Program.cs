@@ -76,10 +76,7 @@ namespace DicomPACS_Client
             StringBuilder SEND_RESULT = new StringBuilder();
             foreach (string dir in dirs)
             {
-                /*
-                try
-                {
-                */
+
                 string existSettingIniStr = dir + @"\info.ini";
                 FileInfo fileInfo = new FileInfo(existSettingIniStr);
                 if (!fileInfo.Exists)
@@ -200,44 +197,10 @@ namespace DicomPACS_Client
                     Form1.lb1.Items.Add("Send PACS error exception : " + e.Message +" + "+ e.StackTrace);
                     Form1.lb1.Items.Add(dir + "[" + DateTime.Now + "]");
                 }
-                /*
-            }
-            catch(Exception e)
-            {
-                Form1.lb1.Items.Add("Makedicomfolder error exception : " + e.Message);
-                Form1.lb1.Items.Add(dir + "[" + DateTime.Now + "]");
-            }
-            */
+
             }
         }
-        //안씀
-        public static string MakeDicom(string ImageFile, string TargetPath)
-        {
-            Bitmap bitmap = new Bitmap(ImageFile);
-            bitmap = GetValidImage(bitmap);
-            int rows, columns;
-            byte[] pixels = GetPixels(bitmap, out rows, out columns);
-            MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
-            DicomDataset dataset = new DicomDataset();
-            //FillDataset(dataset);
-            //TODO : make dicom test
-            dataset.Add(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
-            dataset.Add(DicomTag.Rows, (ushort)rows);
-            dataset.Add(DicomTag.Columns, (ushort)columns);
-            DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
-            pixelData.BitsStored = 8;
-            pixelData.SamplesPerPixel = 3; // 3 : red/green/blue  1 : CT/MR Single Grey Scale
-            pixelData.HighBit = 7;
-            pixelData.PixelRepresentation = 0;
-            pixelData.PlanarConfiguration = 0;
-            pixelData.AddFrame(buffer);
-            pixelData.AddFrame(buffer); //TODO : 두개가 들어가는지 테스트
-            DicomFile dicomfile = new DicomFile(dataset);
-            //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
-            string TargetFile = Path.Combine(TargetPath, "Test.dcm");
-            dicomfile.Save(TargetFile); //todo : dicom file save error
-            return TargetFile;
-        }
+
         private static void FillDataset(DicomDataset dataset,
             string patientid, string patientname, string patientsex, string patientbod, string studydate, string studytime, string studydesc,
             string assessionno, string ordercode)
