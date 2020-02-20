@@ -159,6 +159,10 @@ namespace DicomPACS_Client
                     pixelData.HighBit = 7;
                     pixelData.PixelRepresentation = 0;
                     pixelData.PlanarConfiguration = 0;
+
+                    pixelData.NumberOfFrames = imgFiles.Count; // add number of frames.
+                    
+
                     pixelData.AddFrame(buffer);
                     //TODO : Need to check if it is created dcm in directory
                 }
@@ -171,7 +175,7 @@ namespace DicomPACS_Client
                 {
                     //SendToPACS(TargetFile, Form1.tb2.Text, Form1.tb3.Text, int.Parse(Form1.tb4.Text), Form1.tb5.Text);
 
-                    DicomFile m_pDicomFile = DicomFile.Open(TargetFile, DicomEncoding.GetEncoding("ISO IR 192"));
+                    DicomFile m_pDicomFile = DicomFile.Open(TargetFile, DicomEncoding.GetEncoding("ISO 2022 IR 149"));
                     DicomClient pClient = new DicomClient(Form1.tb3.Text, int.Parse(Form1.tb4.Text), false, Form1.tb2.Text, Form1.tb5.Text);
                     pClient.NegotiateAsyncOps();
                     pClient.AddRequestAsync(new Dicom.Network.DicomCStoreRequest(m_pDicomFile, Dicom.Network.DicomPriority.Medium));
