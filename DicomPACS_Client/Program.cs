@@ -48,7 +48,27 @@ namespace DicomPACS_Client
         private static extern long WritePrivateProfileString(string section, string key, string val, string filePath);
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retVal, int size, string filePath);
-        
+
+        private const int sizeCOL = 793, sizeROW = 1122;
+        public static void MakeEachDicominFolder(string ImageFileFolder)
+        {
+
+            StringBuilder PATIENT_ID = new StringBuilder();
+            StringBuilder PATIENT_NAME = new StringBuilder();
+            StringBuilder PATIENT_SEX = new StringBuilder();
+            StringBuilder PATIENT_BOD = new StringBuilder();
+            StringBuilder STUDY_DATE = new StringBuilder();
+            StringBuilder STUDY_TIME = new StringBuilder();
+            StringBuilder STUDY_DESC = new StringBuilder();
+            StringBuilder ACCESSION_NO = new StringBuilder();
+            StringBuilder ORDER_CODE = new StringBuilder();
+            StringBuilder FILE_CNT = new StringBuilder();
+            StringBuilder REQUEST = new StringBuilder();
+            StringBuilder SEND_RESULT = new StringBuilder();
+        }
+
+
+
         /// <summary>
         /// TODO : 이미지 폴더를 통째로 dicom 파일로 만드는것(ini까지 포함해서)
         /// 를 만들어야함.
@@ -58,8 +78,6 @@ namespace DicomPACS_Client
         /// <returns></returns>
         public static void MakeDicominFolder(string ImageFileFolder)//TODO: need target path change
         {
-            //나중에 다른 Dicom 파일이면 이걸 바꾸는걸 꼭 추가해야합니다.
-            const int sizeCOL = 793, sizeROW = 1122;
             List<string> dirs = new List<string>(Directory.EnumerateDirectories(ImageFileFolder));
             //all dirs find
             StringBuilder PATIENT_ID = new StringBuilder();
