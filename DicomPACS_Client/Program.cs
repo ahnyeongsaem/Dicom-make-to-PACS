@@ -103,6 +103,7 @@ namespace DicomPACS_Client
                 }
                 List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
 
+                
 
                 foreach (string imgfile in imgFiles)
                 {
@@ -160,41 +161,45 @@ namespace DicomPACS_Client
 
                     pixelData.AddFrame(buffer);
                     //TODO : Need to check if it is created dcm in directory
-                }
-                DicomFile dicomfile = new DicomFile(dataset);
-                //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
-                string TargetFile = Path.Combine(dir, dataset.GetString(DicomTag.SOPInstanceUID) + ".dcm");
-                dicomfile.Save(TargetFile); //todo : dicom file save error
+                    DicomFile dicomfile = new DicomFile(dataset);
+                    //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
+                    string TargetFile = Path.Combine(dir, dataset.GetString(DicomTag.SOPInstanceUID) + ".dcm");
+                    dicomfile.Save(TargetFile); //todo : dicom file save error
 
-                try
-                {
-                    //SendToPACS(TargetFile, Form1.tb2.Text, Form1.tb3.Text, int.Parse(Form1.tb4.Text), Form1.tb5.Text);
-
-                    DicomFile m_pDicomFile = DicomFile.Open(TargetFile, DicomEncoding.GetEncoding("ISO 2022 IR 149"));
-                    DicomClient pClient = new DicomClient(Form1.tb3.Text, int.Parse(Form1.tb4.Text), false, Form1.tb2.Text, Form1.tb5.Text);
-                    pClient.NegotiateAsyncOps();
-                    pClient.AddRequestAsync(new Dicom.Network.DicomCStoreRequest(m_pDicomFile, Dicom.Network.DicomPriority.Medium));
-                    pClient.SendAsync();
-
-                    //error event
-                    pClient.RequestTimedOut += (object sender, RequestTimedOutEventArgs e) =>
+                    try
                     {
+                        //SendToPACS(TargetFile, Form1.tb2.Text, Form1.tb3.Text, int.Parse(Form1.tb4.Text), Form1.tb5.Text);
 
+                        DicomFile m_pDicomFile = DicomFile.Open(TargetFile, DicomEncoding.GetEncoding("ISO 2022 IR 149"));
+                        DicomClient pClient = new DicomClient(Form1.tb3.Text, int.Parse(Form1.tb4.Text), false, Form1.tb2.Text, Form1.tb5.Text);
+                        pClient.NegotiateAsyncOps();
+                        pClient.AddRequestAsync(new Dicom.Network.DicomCStoreRequest(m_pDicomFile, Dicom.Network.DicomPriority.Medium));
+                        pClient.SendAsync();
+
+                        //error event
+                        pClient.RequestTimedOut += (object sender, RequestTimedOutEventArgs e) =>
+                        {
+
+                            WritePrivateProfileString("INFO", "SEND_RESULT", "X", dir + @"\info.ini");
+                            Form1.lb1.Items.Add("Send PACS error exception : " + e.Request + " + " + e.Timeout);
+                            throw new NotImplementedException();
+                        };
+
+
+                        WritePrivateProfileString("INFO", "SEND_RESULT", "O", dir + @"\info.ini");
+                        Form1.lb1.Items.Add("dcm send finish : " + dir + "[" + DateTime.Now + "]");
+                    }
+                    catch (Exception e)
+                    {
                         WritePrivateProfileString("INFO", "SEND_RESULT", "X", dir + @"\info.ini");
-                        Form1.lb1.Items.Add("Send PACS error exception : " + e.Request + " + " + e.Timeout);
-                        throw new NotImplementedException();
-                    };
+                        Form1.lb1.Items.Add("Send PACS error exception : " + e.Message + " + " + e.StackTrace);
+                        Form1.lb1.Items.Add(dir + "[" + DateTime.Now + "]");
+                    }
+
+                }
 
 
-                    WritePrivateProfileString("INFO", "SEND_RESULT", "O", dir + @"\info.ini");
-                    Form1.lb1.Items.Add("dcm send finish : " + dir + "[" + DateTime.Now + "]");
-                }
-                catch (Exception e)
-                {
-                    WritePrivateProfileString("INFO", "SEND_RESULT", "X", dir + @"\info.ini");
-                    Form1.lb1.Items.Add("Send PACS error exception : " + e.Message + " + " + e.StackTrace);
-                    Form1.lb1.Items.Add(dir + "[" + DateTime.Now + "]");
-                }
+                
 
             }
 
