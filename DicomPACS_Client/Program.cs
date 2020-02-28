@@ -103,8 +103,10 @@ namespace DicomPACS_Client
                 }
                 List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
 
-                
 
+
+                int imgindex = 0;
+                DicomUID studyuid = GenerateUid();
                 foreach (string imgfile in imgFiles)
                 {
                     if (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "png") == 0)
@@ -121,7 +123,8 @@ namespace DicomPACS_Client
                     
                     DicomDataset dataset = new DicomDataset();
                     FillDataset(dataset,
-                        PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()); //TODO : change need priavate profile string
+                        PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()
+                        ,imgindex,studyuid); //TODO : change need priavate profile string
                     bool imageDataSetFlag = false;
                     DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
                     /////////////////////////////////
@@ -195,7 +198,7 @@ namespace DicomPACS_Client
                         Form1.lb1.Items.Add("Send PACS error exception : " + e.Message + " + " + e.StackTrace);
                         Form1.lb1.Items.Add(dir + "[" + DateTime.Now + "]");
                     }
-
+                    imgindex++;
                 }
 
 
@@ -362,10 +365,23 @@ namespace DicomPACS_Client
 
         private static void FillDataset(DicomDataset dataset,
             string patientid, string patientname, string patientsex, string patientbod, string studydate, string studytime, string studydesc,
-            string assessionno, string ordercode)
+            string assessionno, string ordercode, int imgindex=1, DicomUID studyuid=null)
         {//bod = birthdate
             dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
-            dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());  //스터디는 촬영 부위
+
+            if (studyuid == null)
+                dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());  //스터디는 촬영 부위
+            else
+                dataset.Add(DicomTag.StudyInstanceUID, studyuid);
+                //TODO :  Generate uid를 Study Instance에 써야할듯함
+                //
+
+
+
+
+
+
+
             dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid()); //예 : 이미지 10장을 묶는것 시리즈 상위 그룹이 있는듯?
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
             dataset.Add(DicomTag.BitsAllocated, "8");//add bit allocate but pixeldata delete
@@ -401,7 +417,7 @@ namespace DicomPACS_Client
             //오더코드는 없는데...
             dataset.Add(DicomTag.ReferringPhysicianName, string.Empty);
             dataset.Add(DicomTag.StudyID, "1");
-            dataset.Add(DicomTag.SeriesNumber, "1");
+            dataset.Add(DicomTag.SeriesNumber, ""+imgindex);
             dataset.Add(DicomTag.ModalitiesInStudy, "OT");
             dataset.Add(DicomTag.Modality, "OT");
             dataset.Add(DicomTag.NumberOfStudyRelatedInstances, "1");

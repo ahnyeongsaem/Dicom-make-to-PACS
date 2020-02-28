@@ -163,5 +163,10 @@ namespace DicomPACS_Client
         {
 
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            DicomCtrl.MakeEachDicominFolder(textBox1.Text);
+        }
     }
 }
