@@ -161,7 +161,7 @@ namespace DicomPACS_Client
 
         private void button5_Click(object sender, EventArgs e)
         {
-
+            listBox1.Items.Clear();
         }
 
         private void button6_Click(object sender, EventArgs e)
