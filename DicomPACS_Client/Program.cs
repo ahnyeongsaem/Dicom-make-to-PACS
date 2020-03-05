@@ -105,7 +105,7 @@ namespace DicomPACS_Client
 
 
 
-                int imgindex = 0;
+                int imgindex = 1;
                 DicomUID studyuid = GenerateUid();
                 foreach (string imgfile in imgFiles)
                 {
