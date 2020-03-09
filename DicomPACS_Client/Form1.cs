@@ -116,6 +116,10 @@ namespace DicomPACS_Client
             {
                 DicomCtrl.MakeDicominFolder(textBox1.Text);
             }
+            else if(checkBox2.Checked == true)
+            {
+                DicomCtrl.MakeEachDicominFolder(textBox1.Text);
+            }
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
