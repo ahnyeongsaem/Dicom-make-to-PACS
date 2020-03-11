@@ -70,7 +70,19 @@ namespace DicomPACS_Client
             WritePrivateProfileString("LoadParameter", "TARGET_PORT", tb4.Text, ".\\LoadSetting.ini");
             WritePrivateProfileString("LoadParameter", "TARGET_AET", tb5.Text, ".\\LoadSetting.ini");
 
-           
+            if(checkBox1.Checked==true)
+            {
+                WritePrivateProfileString("LoadParameter", "AUTO_SEND","1", ".\\LoadSetting.ini");
+            }
+            else if(checkBox2.Checked==true)
+            {
+                WritePrivateProfileString("LoadParameter", "AUTO_SEND", "2", ".\\LoadSetting.ini");
+            }
+            else
+            {
+                WritePrivateProfileString("LoadParameter", "AUTO_SEND", "0", ".\\LoadSetting.ini");
+            }
+            
             //TODO : all textbox (text1,2,3,4,5,) add need;
             
         }
