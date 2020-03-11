@@ -60,6 +60,17 @@ namespace DicomPACS_Client
             tb5.Text = stmp.ToString();
             stmp.Clear();
 
+            GetPrivateProfileString("LoadParameter", "AUTO_SEND", "0", stmp, stmp.Capacity, ".\\LoadSetting.ini");
+            if(stmp.ToString()=="1")
+            {
+
+            }
+            else if(stmp.ToString()=="2")
+            {
+
+            }
+            stmp.Clear();
+
             listBox1.Items.Add("User Setting Loading Complete[" + DateTime.Now+"]");
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
