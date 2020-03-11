@@ -63,11 +63,11 @@ namespace DicomPACS_Client
             GetPrivateProfileString("LoadParameter", "AUTO_SEND", "0", stmp, stmp.Capacity, ".\\LoadSetting.ini");
             if(stmp.ToString()=="1")
             {
-
+                checkBox1.Checked = true;
             }
             else if(stmp.ToString()=="2")
             {
-
+                checkBox2.Checked = true;
             }
             stmp.Clear();
 
