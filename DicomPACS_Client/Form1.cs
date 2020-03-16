@@ -202,12 +202,20 @@ namespace DicomPACS_Client
             {
                 checkBox2.Checked = false;
             }
+            if(textBox1.Text=="")
+            {
+                checkBox1.Checked = false;
+            }
         }
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox2.Checked == true)
             {
                 checkBox1.Checked = false;
+            }
+            if (textBox1.Text == "")
+            {
+                checkBox2.Checked = false;
             }
         }
 
