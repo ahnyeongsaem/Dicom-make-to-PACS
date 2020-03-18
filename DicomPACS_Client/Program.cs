@@ -159,7 +159,9 @@ namespace DicomPACS_Client
                     pixelData.PixelRepresentation = 0;
                     pixelData.PlanarConfiguration = 0;
 
-                    pixelData.NumberOfFrames = imgFiles.Count; // add number of frames.
+
+                    //pixelData.NumberOfFrames = imgFiles.Count; // add number of frames.
+                    pixelData.NumberOfFrames = 1;
 
 
                     pixelData.AddFrame(buffer);
@@ -319,8 +321,8 @@ namespace DicomPACS_Client
                     pixelData.PixelRepresentation = 0;
                     pixelData.PlanarConfiguration = 0;
 
-                    pixelData.NumberOfFrames = imgFiles.Count; // add number of frames.
-                    
+                    //pixelData.NumberOfFrames = imgFiles.Count;
+                    pixelData.NumberOfFrames = 1;
 
                     pixelData.AddFrame(buffer);
                     //TODO : Need to check if it is created dcm in directory
