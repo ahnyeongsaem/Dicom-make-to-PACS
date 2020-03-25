@@ -106,7 +106,7 @@ namespace DicomPACS_Client
 
 
                 int imgindex = 1;
-                DicomUID studyuid = GenerateUid();
+                DicomUID seriesuid = GenerateUid();
                 foreach (string imgfile in imgFiles)
                 {
                     if (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "png") == 0)
@@ -124,7 +124,7 @@ namespace DicomPACS_Client
                     DicomDataset dataset = new DicomDataset();
                     FillDataset(dataset,
                         PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()
-                        ,imgindex,studyuid); //TODO : change need priavate profile string
+                        ,1,seriesuid); //TODO : change need priavate profile string
                     bool imageDataSetFlag = false;
                     DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
                     /////////////////////////////////
@@ -323,6 +323,7 @@ namespace DicomPACS_Client
 
                     //pixelData.NumberOfFrames = imgFiles.Count;
                     pixelData.NumberOfFrames = 1;
+                    
 
                     pixelData.AddFrame(buffer);
                     //TODO : Need to check if it is created dcm in directory
@@ -370,21 +371,18 @@ namespace DicomPACS_Client
             string assessionno, string ordercode, int imgindex=1, DicomUID studyuid=null)
         {//bod = birthdate
             dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
+            dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());
 
             if (studyuid == null)
-                dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());  //스터디는 촬영 부위
+                dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid());
+              //스터디는 촬영 부위
             else
-                dataset.Add(DicomTag.StudyInstanceUID, studyuid);
-                //TODO :  Generate uid를 Study Instance에 써야할듯함
-                //
+                dataset.Add(DicomTag.SeriesInstanceUID, studyuid);
+            //TODO :  Generate uid를 Study Instance에 써야할듯함
+            //
 
-
-
-
-
-
-
-            dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid()); //예 : 이미지 10장을 묶는것 시리즈 상위 그룹이 있는듯?
+            
+             //예 : 이미지 10장을 묶는것 시리즈 상위 그룹이 있는듯?
             dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
             dataset.Add(DicomTag.BitsAllocated, "8");//add bit allocate but pixeldata delete
             dataset.Add(DicomTag.PatientID, patientid);
@@ -392,6 +390,8 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.PatientName, DicomEncoding.GetEncoding("ISO 2022 IR 149"),patientname);
             dataset.Add(DicomTag.PatientBirthDate, patientbod);
             dataset.Add(DicomTag.PatientSex, patientsex);
+
+            
             /// A string of characters with one of the following formats
             /// -- nnnD, nnnW, nnnM, nnnY; where nnn shall contain the number of days for D, weeks for W, months for M, or years for Y.
             ///Example: "018M" would represent an age of 18 months.
