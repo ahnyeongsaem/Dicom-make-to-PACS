@@ -428,7 +428,7 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.ImageLaterality, "U");
             dataset.Add(DicomTag.ContentDate, DateTime.Now);
             dataset.Add(DicomTag.ContentTime, DateTime.Now);
-            dataset.Add(DicomTag.InstanceNumber, "1" + imgindex);
+            dataset.Add(DicomTag.InstanceNumber, "" + imgindex);
             dataset.Add(DicomTag.ConversionType, "WSD"); //Describes the kind of image conversion.
         }
         private static DicomUID GenerateUid()
