@@ -124,7 +124,7 @@ namespace DicomPACS_Client
                     DicomDataset dataset = new DicomDataset();
                     FillDataset(dataset,
                         PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()
-                        ,1,seriesuid); //TODO : change need priavate profile string
+                        ,imgindex,seriesuid); //TODO : change need priavate profile string
                     bool imageDataSetFlag = false;
                     DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
                     /////////////////////////////////
@@ -162,7 +162,6 @@ namespace DicomPACS_Client
 
                     //pixelData.NumberOfFrames = imgFiles.Count; // add number of frames.
                     pixelData.NumberOfFrames = 1;
-
 
                     pixelData.AddFrame(buffer);
                     //TODO : Need to check if it is created dcm in directory
@@ -419,7 +418,7 @@ namespace DicomPACS_Client
             //오더코드는 없는데...
             dataset.Add(DicomTag.ReferringPhysicianName, string.Empty);
             dataset.Add(DicomTag.StudyID, "1");
-            dataset.Add(DicomTag.SeriesNumber, ""+imgindex);
+            dataset.Add(DicomTag.SeriesNumber, "1");
             dataset.Add(DicomTag.ModalitiesInStudy, "OT");
             dataset.Add(DicomTag.Modality, "OT");
             dataset.Add(DicomTag.NumberOfStudyRelatedInstances, "1");
@@ -429,7 +428,7 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.ImageLaterality, "U");
             dataset.Add(DicomTag.ContentDate, DateTime.Now);
             dataset.Add(DicomTag.ContentTime, DateTime.Now);
-            dataset.Add(DicomTag.InstanceNumber, "1");
+            dataset.Add(DicomTag.InstanceNumber, "1" + imgindex);
             dataset.Add(DicomTag.ConversionType, "WSD"); //Describes the kind of image conversion.
         }
         private static DicomUID GenerateUid()
