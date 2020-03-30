@@ -106,9 +106,10 @@ namespace DicomPACS_Client
 
 
                 int imgindex = 1;
-                DicomUID seriesuid = GenerateUid();
+                //DicomUID seriesuid = GenerateUid();
                 foreach (string imgfile in imgFiles)
                 {
+                    DicomUID seriesuid = GenerateUid();
                     if (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "png") == 0)
                     {
                     }
