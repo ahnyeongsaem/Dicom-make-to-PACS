@@ -120,8 +120,6 @@ namespace DicomPACS_Client
                     {
                         continue;
                     }
-
-                    
                     DicomDataset dataset = new DicomDataset();
                     FillDataset(dataset,
                         PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()
@@ -159,7 +157,6 @@ namespace DicomPACS_Client
                     pixelData.HighBit = 7;
                     pixelData.PixelRepresentation = 0;
                     pixelData.PlanarConfiguration = 0;
-
 
                     //pixelData.NumberOfFrames = imgFiles.Count; // add number of frames.
                     pixelData.NumberOfFrames = 1;
