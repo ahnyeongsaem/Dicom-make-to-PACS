@@ -106,7 +106,8 @@ namespace DicomPACS_Client
 
 
                 int imgindex = 1;
-                //DicomUID seriesuid = GenerateUid();
+
+                DicomUID studyuid = GenerateUid();
                 foreach (string imgfile in imgFiles)
                 {
                     DicomUID seriesuid = GenerateUid();
@@ -123,7 +124,7 @@ namespace DicomPACS_Client
                     DicomDataset dataset = new DicomDataset();
                     FillDataset(dataset,
                         PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()
-                        ,imgindex,seriesuid); //TODO : change need priavate profile string
+                        ,imgindex,studyuid,seriesuid); //TODO : change need priavate profile string
                     bool imageDataSetFlag = false;
                     DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
                     /////////////////////////////////
@@ -365,16 +366,20 @@ namespace DicomPACS_Client
 
         private static void FillDataset(DicomDataset dataset,
             string patientid, string patientname, string patientsex, string patientbod, string studydate, string studytime, string studydesc,
-            string assessionno, string ordercode, int imgindex=1, DicomUID studyuid=null)
+            string assessionno, string ordercode, int imgindex=1, DicomUID studyuid = null, DicomUID seriesuid=null)
         {//bod = birthdate
             dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
-            dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());
 
             if (studyuid == null)
+                dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());
+            else
+                dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());
+            
+            if (seriesuid == null)
                 dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid());
               //스터디는 촬영 부위
             else
-                dataset.Add(DicomTag.SeriesInstanceUID, studyuid);
+                dataset.Add(DicomTag.SeriesInstanceUID, seriesuid);
             //TODO :  Generate uid를 Study Instance에 써야할듯함
             //
 
@@ -416,7 +421,7 @@ namespace DicomPACS_Client
             //오더코드는 없는데...
             dataset.Add(DicomTag.ReferringPhysicianName, string.Empty);
             dataset.Add(DicomTag.StudyID, "1");
-            dataset.Add(DicomTag.SeriesNumber, "1");
+            dataset.Add(DicomTag.SeriesNumber, "" + imgindex);
             dataset.Add(DicomTag.ModalitiesInStudy, "OT");
             dataset.Add(DicomTag.Modality, "OT");
             dataset.Add(DicomTag.NumberOfStudyRelatedInstances, "1");
@@ -426,7 +431,7 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.ImageLaterality, "U");
             dataset.Add(DicomTag.ContentDate, DateTime.Now);
             dataset.Add(DicomTag.ContentTime, DateTime.Now);
-            dataset.Add(DicomTag.InstanceNumber, "" + imgindex);
+            dataset.Add(DicomTag.InstanceNumber, "1");
             dataset.Add(DicomTag.ConversionType, "WSD"); //Describes the kind of image conversion.
         }
         private static DicomUID GenerateUid()
