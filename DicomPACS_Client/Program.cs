@@ -108,9 +108,13 @@ namespace DicomPACS_Client
                 int imgindex = 1;
 
                 DicomUID studyuid = GenerateUid();
+                DicomUID seriesuid = GenerateUid();
+                DicomUID sopclassid = DicomUID.SecondaryCaptureImageStorage;
+                DicomUID sopinstanceid = GenerateUid();
+
                 foreach (string imgfile in imgFiles)
                 {
-                    DicomUID seriesuid = GenerateUid();
+
                     if (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "png") == 0)
                     {
                     }
@@ -124,7 +128,7 @@ namespace DicomPACS_Client
                     DicomDataset dataset = new DicomDataset();
                     FillDataset(dataset,
                         PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()
-                        ,imgindex,studyuid,seriesuid); //TODO : change need priavate profile string
+                        ,imgindex,studyuid,seriesuid,sopclassid,sopinstanceid); //TODO : change need priavate profile string
                     bool imageDataSetFlag = false;
                     DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
                     /////////////////////////////////
@@ -366,9 +370,9 @@ namespace DicomPACS_Client
 
         private static void FillDataset(DicomDataset dataset,
             string patientid, string patientname, string patientsex, string patientbod, string studydate, string studytime, string studydesc,
-            string assessionno, string ordercode, int imgindex=1, DicomUID studyuid = null, DicomUID seriesuid=null)
+            string assessionno, string ordercode, int imgindex=1, DicomUID studyuid = null, DicomUID seriesuid=null, DicomUID sopclassid=null, DicomUID sopinstanceid=null)
         {//bod = birthdate
-            dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
+            
 
             if (studyuid == null)
                 dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());
@@ -383,9 +387,26 @@ namespace DicomPACS_Client
             //TODO :  Generate uid를 Study Instance에 써야할듯함
             //
 
-            
+            if(sopclassid == null)
+            {
+                dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
+            }
+            else
+            {
+                dataset.Add(DicomTag.SOPClassUID, sopclassid);
+            }
+
+            if(sopinstanceid ==null)
+            {
+                dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
+            }
+            else
+            {
+                dataset.Add(DicomTag.SOPInstanceUID, sopinstanceid);
+            }
+
              //예 : 이미지 10장을 묶는것 시리즈 상위 그룹이 있는듯?
-            dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
+            
             dataset.Add(DicomTag.BitsAllocated, "8");//add bit allocate but pixeldata delete
             dataset.Add(DicomTag.PatientID, patientid);
             dataset.Add(DicomTag.SpecificCharacterSet, "ISO 2022 IR 149"); // ISO 2022 IR 149
