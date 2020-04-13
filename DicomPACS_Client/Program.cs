@@ -444,7 +444,7 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.StudyID, "1");
             dataset.Add(DicomTag.SeriesNumber, "" + imgindex);
             dataset.Add(DicomTag.ModalitiesInStudy, "OT");
-            dataset.Add(DicomTag.Modality, "OT");
+            dataset.Add(DicomTag.Modality, "PC");
             dataset.Add(DicomTag.NumberOfStudyRelatedInstances, "1");
             dataset.Add(DicomTag.NumberOfStudyRelatedSeries, "1");
             dataset.Add(DicomTag.NumberOfSeriesRelatedInstances, "1");
