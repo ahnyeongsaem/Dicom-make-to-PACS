@@ -444,7 +444,7 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.StudyID, "1");
             dataset.Add(DicomTag.SeriesNumber, "" + imgindex);
             dataset.Add(DicomTag.ModalitiesInStudy, "OT");
-            dataset.Add(DicomTag.Modality, "PC");
+            dataset.Add(DicomTag.Modality, "OT");
             dataset.Add(DicomTag.NumberOfStudyRelatedInstances, "1");
             dataset.Add(DicomTag.NumberOfStudyRelatedSeries, "1");
             dataset.Add(DicomTag.NumberOfSeriesRelatedInstances, "1");
@@ -454,6 +454,7 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.ContentTime, DateTime.Now);
             dataset.Add(DicomTag.InstanceNumber, "1");
             dataset.Add(DicomTag.ConversionType, "WSD"); //Describes the kind of image conversion.
+            dataset.Add(DicomTag.NumberOfFrames, "1");
         }
         private static DicomUID GenerateUid()
         {
