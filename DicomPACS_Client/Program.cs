@@ -110,7 +110,7 @@ namespace DicomPACS_Client
                 DicomUID studyuid = GenerateUid();
                 
                 DicomUID sopclassid = DicomUID.SecondaryCaptureImageStorage;
-                DicomUID sopinstanceid = GenerateUid();
+
 
                 foreach (string imgfile in imgFiles)
                 {
@@ -128,6 +128,7 @@ namespace DicomPACS_Client
                     DicomDataset dataset = new DicomDataset();
 
                     DicomUID seriesuid = GenerateUid();
+                    DicomUID sopinstanceid = GenerateUid(); //두개 위로 올려야할수도있음
 
                     FillDataset(dataset,
                         PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()
