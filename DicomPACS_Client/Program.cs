@@ -108,7 +108,7 @@ namespace DicomPACS_Client
                 int imgindex = 1;
 
                 DicomUID studyuid = GenerateUid();
-                DicomUID seriesuid = GenerateUid();
+                
                 DicomUID sopclassid = DicomUID.SecondaryCaptureImageStorage;
                 DicomUID sopinstanceid = GenerateUid();
 
@@ -126,6 +126,9 @@ namespace DicomPACS_Client
                         continue;
                     }
                     DicomDataset dataset = new DicomDataset();
+
+                    DicomUID seriesuid = GenerateUid();
+
                     FillDataset(dataset,
                         PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()
                         ,imgindex,studyuid,seriesuid,sopclassid,sopinstanceid); //TODO : change need priavate profile string
