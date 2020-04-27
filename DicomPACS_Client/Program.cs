@@ -91,6 +91,7 @@ namespace DicomPACS_Client
                 GetPrivateProfileString("INFO", "FILE_CNT", "", FILE_CNT, FILE_CNT.Capacity, dir + @"\info.ini");
                 GetPrivateProfileString("INFO", "REQUEST", "", REQUEST, REQUEST.Capacity, dir + @"\info.ini");
                 GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, dir + @"\info.ini");
+
                 if (REQUEST.ToString() != "1")
                 {
                     Form1.lb1.Items.Add("Request num is : " + REQUEST.ToString() + "[" + DateTime.Now + "]");
@@ -101,38 +102,45 @@ namespace DicomPACS_Client
                     Form1.lb1.Items.Add("Already dcm sended : " + dir + "[" + DateTime.Now + "]");
                     continue;
                 }
+
                 List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
-
-
-
-                int imgindex = 1;
+                List<string> tmp = new List<string>();
 
                 DicomUID studyuid = GenerateUid();
-                
+                DicomUID seriesuid = GenerateUid();
+
                 DicomUID sopclassid = DicomUID.SecondaryCaptureImageStorage;
+
+                int totalImages = 0; // 폴더 내의 총 이미지 갯수
+                int imgindex = 0; // 시리즈 내의 이미지의 번호를 특정(지금까지 처리된 이미지의 갯수)
+
 
 
                 foreach (string imgfile in imgFiles)
                 {
+                    if ((string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "png") == 0) ||
+                        (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "jpg") == 0))
+                    {
+                        totalImages++;
+                        tmp.Add(imgfile);
+                    }
+                }
 
-                    if (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "png") == 0)
-                    {
-                    }
-                    else if (string.Compare(imgfile.Substring(imgfile.Length - 3, 3), "jpg") == 0)
-                    {
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                imgFiles = tmp;
+
+                foreach (string imgfile in imgFiles)
+                {
                     DicomDataset dataset = new DicomDataset();
 
-                    DicomUID seriesuid = GenerateUid();
                     DicomUID sopinstanceid = GenerateUid(); //두개 위로 올려야할수도있음
 
                     FillDataset(dataset,
                         PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()
-                        ,imgindex,studyuid,seriesuid,sopclassid,sopinstanceid); //TODO : change need priavate profile string
+                        , studyuid, seriesuid, sopclassid, sopinstanceid); //TODO : change need priavate profile string
+
+                    dataset.AddOrUpdate(DicomTag.InstanceNumber, Convert.ToString(++imgindex)); // 이미지 번호 (VIEWREX와 UBPACS 모두 이미지 번호를 기준으로 ordering 됨)
+                    dataset.AddOrUpdate(DicomTag.ImagesInAcquisition, Convert.ToString(totalImages)); // 검사에서 획득한 이미지의 총합(=Series 내에 속한 Instance 수)
+
                     bool imageDataSetFlag = false;
                     DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
                     /////////////////////////////////
@@ -168,9 +176,8 @@ namespace DicomPACS_Client
                     pixelData.PlanarConfiguration = 0;
 
                     //pixelData.NumberOfFrames = imgFiles.Count; // add number of frames.
-                    pixelData.NumberOfFrames = 1;
-
-                    pixelData.AddFrame(buffer);
+                    //pixelData.NumberOfFrames = 1;
+                    pixelData.AddFrame(buffer); // AddFrame 되면서 Number of Frame은 auto increment됨. 위에서 Number of Frame을 1로 설정할 경우, 아무것도 없는 프레임이 하나 추가됨.
                     //TODO : Need to check if it is created dcm in directory
                     DicomFile dicomfile = new DicomFile(dataset);
                     //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
@@ -206,16 +213,8 @@ namespace DicomPACS_Client
                         Form1.lb1.Items.Add("Send PACS error exception : " + e.Message + " + " + e.StackTrace);
                         Form1.lb1.Items.Add(dir + "[" + DateTime.Now + "]");
                     }
-                    imgindex++;
                 }
-
-
-                
-
             }
-
-
-
         }
 
 
@@ -268,20 +267,23 @@ namespace DicomPACS_Client
                 GetPrivateProfileString("INFO", "FILE_CNT", "", FILE_CNT, FILE_CNT.Capacity, dir + @"\info.ini");
                 GetPrivateProfileString("INFO", "REQUEST", "", REQUEST, REQUEST.Capacity, dir + @"\info.ini");
                 GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, dir + @"\info.ini");
-                if (REQUEST.ToString() != "1")
-                {
-                    Form1.lb1.Items.Add("Request num is : " + REQUEST.ToString() + "[" + DateTime.Now + "]");
-                    continue;
-                }
-                if (SEND_RESULT.ToString() == "O")
-                {
-                    Form1.lb1.Items.Add("Already dcm sended : " + dir + "[" + DateTime.Now + "]");
-                    continue;
-                }
+                //if (REQUEST.ToString() != "1")
+                //{
+                //    Form1.lb1.Items.Add("Request num is : " + REQUEST.ToString() + "[" + DateTime.Now + "]");
+                //    continue;
+                //}
+                //if (SEND_RESULT.ToString() == "O")
+                //{
+                //    Form1.lb1.Items.Add("Already dcm sended : " + dir + "[" + DateTime.Now + "]");
+                //    continue;
+                //}
                 List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
+                int imageCnt = 0;
                 DicomDataset dataset = new DicomDataset();
                 FillDataset(dataset,
                     PATIENT_ID.ToString(), PATIENT_NAME.ToString(), PATIENT_SEX.ToString(), PATIENT_BOD.ToString(), STUDY_DATE.ToString(), STUDY_TIME.ToString(), STUDY_DESC.ToString(), ACCESSION_NO.ToString(), ORDER_CODE.ToString()); //TODO : change need priavate profile string
+
+                dataset.AddOrUpdate(DicomTag.SOPClassUID, DicomUID.MultiFrameTrueColorSecondaryCaptureImageStorage);
                 bool imageDataSetFlag = false;
                 DicomPixelData pixelData = DicomPixelData.Create(dataset, true); //TODO : bug fix dicompixeldata create
                 foreach (string imgfile in imgFiles)
@@ -310,7 +312,7 @@ namespace DicomPACS_Client
                         g.FillRectangle(Brushes.Black, 0, 0, newImage.Width, newImage.Height);
                         g.DrawImage(bitmap, (sizeCOL - newWidth) / 2, (sizeROW - newHeight) / 2, newWidth, newHeight);
                     }
-                    
+
                     newImage = GetValidImage(newImage);
                     byte[] pixels = GetPixels(newImage, out rows, out columns);
                     MemoryByteBuffer buffer = new MemoryByteBuffer(pixels);
@@ -328,12 +330,18 @@ namespace DicomPACS_Client
                     pixelData.PlanarConfiguration = 0;
 
                     //pixelData.NumberOfFrames = imgFiles.Count;
-                    pixelData.NumberOfFrames = 1;
-                    
+                    //pixelData.NumberOfFrames = 1;
+                    imageCnt++;
 
                     pixelData.AddFrame(buffer);
                     //TODO : Need to check if it is created dcm in directory
                 }
+
+                dataset.AddOrUpdate(DicomTag.RecommendedDisplayFrameRate, "0");
+                //dataset.AddOrUpdate(DicomTag.FrameTime, "1000000");
+                //dataset.AddOrUpdate(DicomTag.FrameDelay, "1000000");
+
+
                 DicomFile dicomfile = new DicomFile(dataset);
                 //string TargetFile = Path.Combine(TargetPath, sopInstanceUID + ".dcm");
                 string TargetFile = Path.Combine(dir, dataset.GetString(DicomTag.SOPInstanceUID) + ".dcm");
@@ -352,20 +360,20 @@ namespace DicomPACS_Client
                     //error event
                     pClient.RequestTimedOut += (object sender, RequestTimedOutEventArgs e) =>
                     {
-                        
+
                         WritePrivateProfileString("INFO", "SEND_RESULT", "X", dir + @"\info.ini");
                         Form1.lb1.Items.Add("Send PACS error exception : " + e.Request + " + " + e.Timeout);
                         throw new NotImplementedException();
                     };
-                    
+
 
                     WritePrivateProfileString("INFO", "SEND_RESULT", "O", dir + @"\info.ini");
                     Form1.lb1.Items.Add("dcm send finish : " + dir + "[" + DateTime.Now + "]");
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     WritePrivateProfileString("INFO", "SEND_RESULT", "X", dir + @"\info.ini");
-                    Form1.lb1.Items.Add("Send PACS error exception : " + e.Message +" + "+ e.StackTrace);
+                    Form1.lb1.Items.Add("Send PACS error exception : " + e.Message + " + " + e.StackTrace);
                     Form1.lb1.Items.Add(dir + "[" + DateTime.Now + "]");
                 }
 
@@ -374,24 +382,27 @@ namespace DicomPACS_Client
 
         private static void FillDataset(DicomDataset dataset,
             string patientid, string patientname, string patientsex, string patientbod, string studydate, string studytime, string studydesc,
-            string assessionno, string ordercode, int imgindex=1, DicomUID studyuid = null, DicomUID seriesuid=null, DicomUID sopclassid=null, DicomUID sopinstanceid=null)
+            string assessionno, string ordercode, DicomUID studyuid = null, DicomUID seriesuid = null, DicomUID sopclassid = null, DicomUID sopinstanceid = null)
         {//bod = birthdate
-            
+
+            //dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());
+            //dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid());
+
 
             if (studyuid == null)
                 dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());
             else
-                dataset.Add(DicomTag.StudyInstanceUID, GenerateUid());
-            
+                dataset.Add(DicomTag.StudyInstanceUID, studyuid);
+
             if (seriesuid == null)
                 dataset.Add(DicomTag.SeriesInstanceUID, GenerateUid());
-              //스터디는 촬영 부위
+            //스터디는 촬영 부위
             else
                 dataset.Add(DicomTag.SeriesInstanceUID, seriesuid);
             //TODO :  Generate uid를 Study Instance에 써야할듯함
             //
 
-            if(sopclassid == null)
+            if (sopclassid == null)
             {
                 dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
             }
@@ -400,7 +411,7 @@ namespace DicomPACS_Client
                 dataset.Add(DicomTag.SOPClassUID, sopclassid);
             }
 
-            if(sopinstanceid ==null)
+            if (sopinstanceid == null)
             {
                 dataset.Add(DicomTag.SOPInstanceUID, GenerateUid());
             }
@@ -409,16 +420,16 @@ namespace DicomPACS_Client
                 dataset.Add(DicomTag.SOPInstanceUID, sopinstanceid);
             }
 
-             //예 : 이미지 10장을 묶는것 시리즈 상위 그룹이 있는듯?
-            
+            //예 : 이미지 10장을 묶는것 시리즈 상위 그룹이 있는듯?
+
             dataset.Add(DicomTag.BitsAllocated, "8");//add bit allocate but pixeldata delete
             dataset.Add(DicomTag.PatientID, patientid);
             dataset.Add(DicomTag.SpecificCharacterSet, "ISO 2022 IR 149"); // ISO 2022 IR 149
-            dataset.Add(DicomTag.PatientName, DicomEncoding.GetEncoding("ISO 2022 IR 149"),patientname);
+            dataset.Add(DicomTag.PatientName, DicomEncoding.GetEncoding("ISO 2022 IR 149"), patientname);
             dataset.Add(DicomTag.PatientBirthDate, patientbod);
             dataset.Add(DicomTag.PatientSex, patientsex);
 
-            
+
             /// A string of characters with one of the following formats
             /// -- nnnD, nnnW, nnnM, nnnY; where nnn shall contain the number of days for D, weeks for W, months for M, or years for Y.
             ///Example: "018M" would represent an age of 18 months.
@@ -446,7 +457,8 @@ namespace DicomPACS_Client
             //오더코드는 없는데...
             dataset.Add(DicomTag.ReferringPhysicianName, string.Empty);
             dataset.Add(DicomTag.StudyID, "1");
-            dataset.Add(DicomTag.SeriesNumber, "" + imgindex);
+            //dataset.Add(DicomTag.SeriesNumber, "" + imgindex);
+            dataset.Add(DicomTag.SeriesNumber, "1");
             dataset.Add(DicomTag.ModalitiesInStudy, "OT");
             dataset.Add(DicomTag.Modality, "OT");
             dataset.Add(DicomTag.NumberOfStudyRelatedInstances, "1");
@@ -458,7 +470,7 @@ namespace DicomPACS_Client
             dataset.Add(DicomTag.ContentTime, DateTime.Now);
             dataset.Add(DicomTag.InstanceNumber, "1");
             dataset.Add(DicomTag.ConversionType, "WSD"); //Describes the kind of image conversion.
-            dataset.Add(DicomTag.NumberOfFrames, "1");
+            //dataset.Add(DicomTag.NumberOfFrames, "1");
         }
         private static DicomUID GenerateUid()
         {
@@ -516,7 +528,7 @@ namespace DicomPACS_Client
         //need button or code send to pacs
         public static void SendToPACS(string dcmfile, string sourceAET, string targetIP, int targetPort, string targetAET)
         {
-            
+
             DicomFile m_pDicomFile = DicomFile.Open(dcmfile, DicomEncoding.GetEncoding("ISO 2022 IR 149"));
             DicomClient pClient = new DicomClient(targetIP, targetPort, false, sourceAET, targetAET);
             pClient.NegotiateAsyncOps();
@@ -524,8 +536,8 @@ namespace DicomPACS_Client
             pClient.SendAsync();
 
             //error event
-            
-            
+
+
         }
 
     }
