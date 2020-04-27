@@ -267,16 +267,16 @@ namespace DicomPACS_Client
                 GetPrivateProfileString("INFO", "FILE_CNT", "", FILE_CNT, FILE_CNT.Capacity, dir + @"\info.ini");
                 GetPrivateProfileString("INFO", "REQUEST", "", REQUEST, REQUEST.Capacity, dir + @"\info.ini");
                 GetPrivateProfileString("INFO", "SEND_RESULT", "", SEND_RESULT, SEND_RESULT.Capacity, dir + @"\info.ini");
-                //if (REQUEST.ToString() != "1")
-                //{
-                //    Form1.lb1.Items.Add("Request num is : " + REQUEST.ToString() + "[" + DateTime.Now + "]");
-                //    continue;
-                //}
-                //if (SEND_RESULT.ToString() == "O")
-                //{
-                //    Form1.lb1.Items.Add("Already dcm sended : " + dir + "[" + DateTime.Now + "]");
-                //    continue;
-                //}
+                if (REQUEST.ToString() != "1")
+                {
+                    Form1.lb1.Items.Add("Request num is : " + REQUEST.ToString() + "[" + DateTime.Now + "]");
+                    continue;
+                }
+                if (SEND_RESULT.ToString() == "O")
+                {
+                    Form1.lb1.Items.Add("Already dcm sended : " + dir + "[" + DateTime.Now + "]");
+                    continue;
+                }
                 List<string> imgFiles = new List<string>(Directory.EnumerateFiles(dir));
                 int imageCnt = 0;
                 DicomDataset dataset = new DicomDataset();
