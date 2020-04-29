@@ -460,7 +460,9 @@ namespace DicomPACS_Client
             //dataset.Add(DicomTag.SeriesNumber, "" + imgindex);
             dataset.Add(DicomTag.SeriesNumber, "1");
             dataset.Add(DicomTag.ModalitiesInStudy, "OT");
-            dataset.Add(DicomTag.Modality, "OT");
+            //dataset.Add(DicomTag.Modality, "OT");
+            dataset.Add(DicomTag.Modality, Form1.tb6.Text);
+
             dataset.Add(DicomTag.NumberOfStudyRelatedInstances, "1");
             dataset.Add(DicomTag.NumberOfStudyRelatedSeries, "1");
             dataset.Add(DicomTag.NumberOfSeriesRelatedInstances, "1");

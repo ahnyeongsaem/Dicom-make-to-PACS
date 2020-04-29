@@ -23,6 +23,7 @@ namespace DicomPACS_Client
         public static TextBox tb3; //targetIP
         public static TextBox tb4; //targetPort
         public static TextBox tb5; //targetAET
+        public static TextBox tb6; //targetAET
         public static ListBox lb1; //log listbox
 
         [DllImport("kernel32")]
@@ -41,6 +42,7 @@ namespace DicomPACS_Client
             tb3 = textBox3;
             tb4 = textBox4;
             tb5 = textBox5;
+            tb6 = textBox6;
             lb1 = listBox1;
 
             StringBuilder stmp = new StringBuilder();
@@ -59,6 +61,10 @@ namespace DicomPACS_Client
             GetPrivateProfileString("LoadParameter", "TARGET_AET", "", stmp, stmp.Capacity, ".\\LoadSetting.ini");
             tb5.Text = stmp.ToString();
             stmp.Clear();
+            GetPrivateProfileString("LoadParameter", "MODALITY", "", stmp, stmp.Capacity, ".\\LoadSetting.ini");
+            tb6.Text = stmp.ToString();
+            stmp.Clear();
+
 
             GetPrivateProfileString("LoadParameter", "AUTO_SEND", "0", stmp, stmp.Capacity, ".\\LoadSetting.ini");
             if(stmp.ToString()=="1")
@@ -80,8 +86,9 @@ namespace DicomPACS_Client
             WritePrivateProfileString("LoadParameter", "TARGET_IP", tb3.Text, ".\\LoadSetting.ini");
             WritePrivateProfileString("LoadParameter", "TARGET_PORT", tb4.Text, ".\\LoadSetting.ini");
             WritePrivateProfileString("LoadParameter", "TARGET_AET", tb5.Text, ".\\LoadSetting.ini");
+            WritePrivateProfileString("LoadParameter", "MODALITY", tb6.Text, ".\\LoadSetting.ini");
 
-            if(checkBox1.Checked==true)
+            if (checkBox1.Checked==true)
             {
                 WritePrivateProfileString("LoadParameter", "AUTO_SEND","1", ".\\LoadSetting.ini");
             }
