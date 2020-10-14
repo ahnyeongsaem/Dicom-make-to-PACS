@@ -7,3 +7,4 @@ However, since it is functionalized, please refer to the functions in the class 
 1. make dicom
 2. send pacs
 3. other library
+4. graphic visualiztion
